@@ -1,0 +1,2297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OGM · Avaliação de Serviços Públicos</title>
+<style>
+  :root{
+    --azul:#0056EF; --azul2:#0a3aa8; --azul-esc:#0a2350;
+    --verde:#20BF40; --amarelo:#EDA704; --laranja:#F26522; --vermelho:#E23B2E;
+    --bg:#eef1f8; --card:#ffffff; --linha:#e2e7f3; --texto:#1b2334; --muted:#6b7690;
+    --grad:linear-gradient(90deg,var(--verde),var(--amarelo),var(--laranja));
+    --sombra:0 1px 3px rgba(20,35,80,.08),0 1px 2px rgba(20,35,80,.04);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background:var(--bg);color:var(--texto);font-size:14px;line-height:1.45}
+  a{color:var(--azul)}
+  header{background:#fff;border-bottom:1px solid var(--linha);box-shadow:var(--sombra)}
+  .headbar{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:14px;padding:12px 20px}
+  .logo{width:46px;height:46px;min-width:46px;flex:0 0 auto}
+  .htxt h1{font-size:18px;margin:0;letter-spacing:.2px}
+  .htxt .sub{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
+  .voltar{margin-left:auto;font-size:13px;font-weight:700;color:var(--azul);text-decoration:none;
+    border:1px solid #cfdcff;border-radius:9px;padding:8px 14px;background:#fff}
+  .voltar:hover{background:#f2f6ff}
+  .gradbar{height:4px;background:var(--grad)}
+  nav{background:var(--azul-esc)}
+  .navwrap{max-width:1240px;margin:0 auto;display:flex;gap:2px;padding:0 12px;flex-wrap:wrap}
+  nav button{background:transparent;border:0;color:#c9d6f5;font-size:13.5px;font-weight:600;
+    padding:12px 16px;cursor:pointer;border-bottom:3px solid transparent}
+  nav button:hover{color:#fff}
+  nav button.on{color:#fff;border-bottom-color:var(--amarelo)}
+  main{max-width:1240px;margin:0 auto;padding:22px 20px 60px}
+  .card{background:var(--card);border:1px solid var(--linha);border-radius:12px;box-shadow:var(--sombra)}
+  .pad{padding:18px}
+  h2.sec{font-size:16px;margin:0 0 2px}
+  .lead{color:var(--muted);font-size:13px;margin:0 0 16px}
+  .btn{border:0;border-radius:9px;padding:10px 16px;font-weight:700;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .btn.primary{background:var(--azul);color:#fff}
+  .btn.primary:hover{background:var(--azul2)}
+  .btn.ghost{background:#fff;color:var(--azul);border:1px solid #cfdcff}
+  .btn.ghost:hover{background:#f2f6ff}
+  .btn.sm{padding:6px 11px;font-size:12.5px;border-radius:7px}
+  .btn.danger{background:#fff;color:var(--vermelho);border:1px solid #f3c9c5}
+  .btn.ok{background:var(--verde);color:#fff}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+  .kpi{padding:16px 18px;position:relative;overflow:hidden}
+  .kpi .n{font-size:30px;font-weight:800;line-height:1}
+  .kpi .l{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:6px}
+  .kpi .sub2{font-size:11px;color:var(--muted);margin-top:3px}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--azul)}
+  .kpi.g::before{background:var(--verde)} .kpi.y::before{background:var(--amarelo)}
+  .kpi.o::before{background:var(--laranja)} .kpi.r::before{background:var(--vermelho)}
+  .kpi.b::before{background:#7A5CF0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px}
+  .toolbar .fld{display:flex;flex-direction:column;gap:4px}
+  .toolbar .fld span{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .toolbar input,.toolbar select{padding:9px 11px;border:1px solid var(--linha);border-radius:8px;font-size:13px;background:#fff;font-family:inherit}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--linha);vertical-align:top}
+  th{font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);background:#f7f9fe;position:sticky;top:0;z-index:2}
+  tbody tr:hover{background:#f7f9ff;cursor:pointer}
+  tbody tr.alerta{background:#fff5f4}
+  tbody tr.alerta:hover{background:#ffe9e6}
+  tbody tr.alerta td:first-child{border-left:4px solid var(--vermelho)}
+  .tblwrap{overflow:auto;max-height:65vh;border-radius:10px;border:1px solid var(--linha)}
+  .chip{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11.5px;font-weight:700;white-space:nowrap}
+  .chip.blue{background:#e5edff;color:#1a49c7}
+  .chip.green{background:#e2f7e6;color:#1a8f33}
+  .chip.amber{background:#fdf1d6;color:#9a6a00}
+  .chip.orange{background:#ffe9dc;color:#c34e15}
+  .chip.red{background:#fde3e0;color:#c02a1f}
+  .chip.gray{background:#eceff5;color:#5a6480}
+  .chip.purple{background:#efe9ff;color:#5b3fd0}
+  .overlay{position:fixed;inset:0;background:rgba(15,25,55,.5);display:flex;align-items:flex-start;
+    justify-content:center;padding:26px 14px;overflow:auto;z-index:50}
+  .modal{background:#fff;border-radius:14px;width:100%;max-width:960px;box-shadow:0 24px 60px rgba(10,25,70,.35)}
+  .modal.wide{max-width:1180px}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid var(--linha)}
+  .modal-head h3{margin:0;font-size:16px}
+  .modal-head .x{border:0;background:#f1f4fb;border-radius:8px;width:34px;height:34px;font-size:18px;cursor:pointer;color:#5a6480}
+  .modal-body{padding:20px 22px;max-height:74vh;overflow:auto}
+  .modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:14px 22px;border-top:1px solid var(--linha);background:#fafbfe;border-radius:0 0 14px 14px;flex-wrap:wrap}
+  fieldset{border:1px solid var(--linha);border-radius:10px;padding:14px 16px 4px;margin:0 0 18px}
+  legend{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--azul);padding:0 8px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:12px}
+  .frow.one{grid-template-columns:1fr}
+  .frow.three{grid-template-columns:1fr 1fr 1fr}
+  .frow.four{grid-template-columns:1fr 1fr 1fr 1fr}
+  @media(max-width:680px){.frow,.frow.three,.frow.four{grid-template-columns:1fr}}
+  label.f{display:block;font-size:12.5px;font-weight:700;margin-bottom:5px;color:#374260}
+  label.f .hint{display:block;font-weight:500;color:var(--muted);font-size:11.5px;margin-top:2px}
+  input,select,textarea{width:100%;padding:9px 11px;border:1px solid #d5ddee;border-radius:8px;font-size:13.5px;
+    font-family:inherit;background:#fff;color:var(--texto)}
+  input:focus,select:focus,textarea:focus{outline:2px solid #bcd0ff;border-color:var(--azul)}
+  textarea{min-height:70px;resize:vertical}
+  .check{display:flex;gap:9px;align-items:flex-start;font-size:13px;font-weight:600;color:#374260;margin-bottom:8px}
+  .check input{width:auto;margin-top:2px;flex:0 0 auto}
+  .check .hint{display:block;font-weight:500;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .empty{text-align:center;color:var(--muted);padding:48px 20px}
+  .empty svg{opacity:.35;margin-bottom:10px}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--azul-esc);color:#fff;
+    padding:12px 20px;border-radius:10px;font-weight:600;font-size:13.5px;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:90vw;text-align:center}
+  .toast.show{opacity:1}
+  .setup{max-width:760px;margin:40px auto}
+  .setup ol{line-height:1.8} .setup code{background:#eef1f8;padding:2px 6px;border-radius:5px;font-size:12.5px}
+
+  /* ---------- ícones-âncora dos eixos ---------- */
+  .eixo-ico{width:30px;height:30px;flex:0 0 auto}
+  .eixo-ico.lg{width:54px;height:54px}
+  .eixo-tag{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;
+    letter-spacing:.4px;padding:4px 11px 4px 5px;border-radius:20px;background:#eef2fb;color:#374260}
+  .eixo-tag svg{width:20px;height:20px}
+
+  /* ---------- modo entrevista ---------- */
+  .ent-wrap{position:fixed;inset:0;background:var(--bg);z-index:60;display:flex;flex-direction:column;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  .ent-top{background:#fff;border-bottom:1px solid var(--linha);padding:12px 20px;display:flex;
+    align-items:center;gap:14px;flex-wrap:wrap;box-shadow:var(--sombra)}
+  .ent-top .id{font-family:ui-monospace,Consolas,monospace;font-weight:800;color:var(--azul2);
+    background:#e5edff;padding:6px 12px;border-radius:8px;font-size:14px}
+  .ent-prog{flex:1;min-width:140px;height:8px;background:#e8eefc;border-radius:6px;overflow:hidden}
+  .ent-prog i{display:block;height:100%;background:var(--grad);width:0;transition:width .25s}
+  .ent-body{flex:1;overflow:auto;padding:26px 20px 40px}
+  .ent-inner{max-width:900px;margin:0 auto}
+  .ent-bloco{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .ent-bloco h3{margin:0;font-size:15px;color:var(--muted);font-weight:700}
+  .ent-perg{font-size:26px;font-weight:700;line-height:1.3;margin:6px 0 4px;letter-spacing:-.2px}
+  @media(max-width:700px){.ent-perg{font-size:21px}}
+  .ent-orient{background:#f5f8ff;border:1px solid #dbe6ff;border-radius:9px;padding:10px 13px;
+    font-size:13px;color:#3a4870;margin:12px 0 0}
+  .ent-opts{display:grid;gap:16px;margin:26px 0 0;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+  .opt{background:#fff;border:3px solid var(--linha);border-radius:18px;padding:22px 16px 18px;
+    cursor:pointer;text-align:center;font-family:inherit;transition:border-color .12s,transform .12s;
+    display:flex;flex-direction:column;align-items:center;gap:12px;min-height:150px;justify-content:center}
+  .opt:hover{border-color:#b9ccff}
+  .opt:focus-visible{outline:3px solid var(--azul);outline-offset:2px}
+  .opt.on{border-color:var(--azul);background:#f2f6ff;transform:translateY(-3px)}
+  .opt .rot{font-size:20px;font-weight:700}
+  .opt svg{width:104px;height:104px}
+  .opt.barra svg{width:118px;height:68px}
+  .opt.txt{min-height:0;padding:20px 16px}
+  .opt.txt .rot{font-size:18px}
+  .ent-esp{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;justify-content:center}
+  .esp{background:#fff;border:2px solid var(--linha);border-radius:12px;padding:10px 16px;
+    font-size:13px;font-weight:700;color:#5a6480;cursor:pointer;font-family:inherit}
+  .esp:hover{border-color:#b9ccff}
+  .esp.on{border-color:var(--azul);background:#f2f6ff;color:var(--azul2)}
+  .esp.alerta.on{border-color:var(--vermelho);background:#fde3e0;color:#b02a1f}
+  .ent-aberta textarea{min-height:170px;font-size:17px;line-height:1.5;margin-top:20px;padding:16px}
+  .ent-foot{background:#fff;border-top:1px solid var(--linha);padding:14px 20px;display:flex;
+    gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .ent-foot .btn{padding:14px 26px;font-size:15px;border-radius:11px}
+  .ent-passo{font-size:12.5px;color:var(--muted);font-weight:700}
+
+  /* ---------- gestão ---------- */
+  .lista-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--linha);
+    border-radius:11px;margin-bottom:10px;background:#fff;flex-wrap:wrap}
+  .lista-item .mt{flex:1;min-width:220px}
+  .lista-item .mt b{display:block;font-size:14.5px}
+  .lista-item .mt .m2{font-size:12px;color:var(--muted);margin-top:3px}
+  .lista-item .acts{display:flex;gap:7px;flex-wrap:wrap}
+  .form-card{cursor:pointer;transition:border-color .12s}
+  .form-card:hover{border-color:#b9ccff}
+  .sub-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .sub-tabs button{border:1px solid var(--linha);background:#fff;border-radius:20px;padding:7px 14px;
+    font-size:12.5px;font-weight:600;cursor:pointer;color:#374260;font-family:inherit}
+  .sub-tabs button.on{background:var(--azul);color:#fff;border-color:var(--azul)}
+  .linha-edit{display:grid;gap:8px;align-items:start;padding:10px;border:1px solid var(--linha);
+    border-radius:9px;margin-bottom:8px;background:#fbfcff}
+  .rm{background:#fff;color:var(--vermelho);border:1px solid #f3c9c5;border-radius:7px;
+    width:32px;height:32px;cursor:pointer;font-size:15px;flex:0 0 auto;font-family:inherit}
+  .opcoes-box{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .opcoes-box .oc{background:#eef2fb;border-radius:16px;padding:4px 10px;font-size:11.5px;font-weight:700;color:#374260}
+  .fila-badge{position:fixed;right:18px;bottom:18px;background:var(--laranja);color:#fff;border:0;
+    border-radius:11px;padding:11px 16px;font-weight:700;font-size:13px;cursor:pointer;z-index:70;
+    box-shadow:0 8px 22px rgba(0,0,0,.22);display:none;font-family:inherit}
+  .fila-badge.show{display:block}
+  .barrinha{display:flex;align-items:center;gap:10px;margin:7px 0;font-size:13px}
+  .barrinha .lbl{width:40%;min-width:110px}
+  .barrinha .track{flex:1;height:10px;background:#eef1f8;border-radius:6px;overflow:hidden}
+  .barrinha .fill{height:100%;border-radius:6px;background:var(--azul)}
+  .barrinha .val{width:42px;text-align:right;font-weight:800;color:var(--muted)}
+  .aviso{border-radius:9px;padding:11px 14px;font-size:12.5px;font-weight:600;margin-bottom:14px}
+  .aviso.r{background:#fde3e0;color:#b02a1f;border:1px solid #f3c9c5}
+  .aviso.y{background:#fdf1d6;color:#8a5d00;border:1px solid #f0dcae}
+  .aviso.b{background:#eaf1ff;color:#1a3f96;border:1px solid #cfdcff}
+  .hidden{display:none!important}
+  .det-bloco{border:1px solid var(--linha);border-radius:10px;padding:14px;margin-bottom:12px}
+  .det-bloco h4{margin:0 0 10px;font-size:13.5px;display:flex;align-items:center;gap:9px}
+  .det-q{padding:8px 0;border-bottom:1px dashed var(--linha);font-size:13px}
+  .det-q:last-child{border-bottom:0}
+  .det-q .e{color:#374260}
+  .det-q .r{font-weight:700;margin-top:3px}
+  .det-q .r.neg{color:var(--vermelho)} .det-q .r.med{color:#9a6a00} .det-q .r.pos{color:#1a8f33}
+  .det-q .r.esp{color:var(--muted)}
+  .det-q blockquote{margin:5px 0 0;padding:8px 12px;background:#f7f9ff;border-left:3px solid var(--azul);
+    border-radius:0 7px 7px 0;font-size:13px;color:#374260;white-space:pre-wrap}
+  @media print{
+    body{background:#fff}
+    header,nav,.toolbar,.no-print,.fila-badge,.toast{display:none!important}
+    main{max-width:none;padding:0}
+    .card{border:0;box-shadow:none}
+    .tblwrap{max-height:none;overflow:visible;border:0}
+    .print-only{display:block!important}
+  }
+  .print-only{display:none}
+  .capa{text-align:center;padding:36px 20px 26px;border-bottom:3px solid var(--azul)}
+  .capa h1{font-size:23px;margin:14px 0 6px}
+  .capa .org{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .capa .filtros{margin-top:16px;font-size:13px;color:#374260;line-height:1.9}
+  .capa .filtros b{color:var(--azul2)}
+</style>
+</head>
+<body>
+
+<!-- =================== SVG SPRITE =================== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="gRosto" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3FBF3F"/><stop offset=".45" stop-color="#EDC000"/>
+    <stop offset="1" stop-color="#F58A1F"/>
+  </linearGradient>
+  <linearGradient id="gAro" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#4BA5FF"/><stop offset=".5" stop-color="#1C7CFF"/>
+    <stop offset="1" stop-color="#1E5397"/>
+  </linearGradient>
+
+  <!-- rostos: balão da OGM com braços e pernas -->
+  <symbol id="ico-feliz" viewBox="0 0 120 130">
+    <g stroke="url(#gAro)" stroke-width="9" stroke-linecap="round" fill="none">
+      <path d="M26 66 Q10 72 12 86"/><path d="M94 66 Q110 72 108 86"/>
+      <path d="M46 96 V116"/><path d="M74 96 V116"/>
+    </g>
+    <circle cx="12" cy="88" r="7" fill="#fff" stroke="#1E5397" stroke-width="2.5"/>
+    <circle cx="108" cy="88" r="7" fill="#fff" stroke="#1E5397" stroke-width="2.5"/>
+    <ellipse cx="44" cy="120" rx="13" ry="7" fill="url(#gAro)"/>
+    <ellipse cx="76" cy="120" rx="13" ry="7" fill="url(#gAro)"/>
+    <path d="M60 8 A46 46 0 1 1 59.9 8 Z" fill="url(#gAro)"/>
+    <path d="M86 88 Q98 100 96 108 Q84 104 78 94 Z" fill="url(#gAro)"/>
+    <circle cx="60" cy="54" r="36" fill="url(#gRosto)"/>
+    <ellipse cx="47" cy="47" rx="7" ry="9" fill="#0d2255"/>
+    <ellipse cx="73" cy="47" rx="7" ry="9" fill="#0d2255"/>
+    <circle cx="49.5" cy="43" r="2.6" fill="#fff"/><circle cx="75.5" cy="43" r="2.6" fill="#fff"/>
+    <path d="M40 35 Q47 30 54 34" stroke="#0d2255" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M66 34 Q73 30 80 35" stroke="#0d2255" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M45 63 Q60 79 75 63 Z" fill="#0d2255"/>
+    <path d="M51 64 h18 q-2 5 -9 5 t-9 -5 Z" fill="#fff"/>
+  </symbol>
+
+  <symbol id="ico-neutro" viewBox="0 0 120 130">
+    <g stroke="url(#gAro)" stroke-width="9" stroke-linecap="round" fill="none">
+      <path d="M26 66 Q10 74 10 88"/><path d="M94 66 Q110 74 110 88"/>
+      <path d="M46 96 V116"/><path d="M74 96 V116"/>
+    </g>
+    <circle cx="10" cy="92" r="7" fill="#fff" stroke="#1E5397" stroke-width="2.5"/>
+    <circle cx="110" cy="92" r="7" fill="#fff" stroke="#1E5397" stroke-width="2.5"/>
+    <ellipse cx="44" cy="120" rx="13" ry="7" fill="url(#gAro)"/>
+    <ellipse cx="76" cy="120" rx="13" ry="7" fill="url(#gAro)"/>
+    <path d="M60 8 A46 46 0 1 1 59.9 8 Z" fill="url(#gAro)"/>
+    <path d="M86 88 Q98 100 96 108 Q84 104 78 94 Z" fill="url(#gAro)"/>
+    <circle cx="60" cy="54" r="36" fill="url(#gRosto)"/>
+    <ellipse cx="47" cy="49" rx="7" ry="9" fill="#0d2255"/>
+    <ellipse cx="73" cy="49" rx="7" ry="9" fill="#0d2255"/>
+    <circle cx="49.5" cy="45" r="2.6" fill="#fff"/><circle cx="75.5" cy="45" r="2.6" fill="#fff"/>
+    <path d="M40 36 Q47 33 54 36" stroke="#0d2255" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M66 36 Q73 33 80 36" stroke="#0d2255" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M47 69 H73" stroke="#0d2255" stroke-width="4.2" stroke-linecap="round"/>
+  </symbol>
+
+  <symbol id="ico-triste" viewBox="0 0 120 130">
+    <g stroke="url(#gAro)" stroke-width="9" stroke-linecap="round" fill="none">
+      <path d="M26 62 Q8 60 10 74"/><path d="M94 66 Q110 76 108 90"/>
+      <path d="M46 96 V116"/><path d="M74 96 V116"/>
+    </g>
+    <circle cx="11" cy="77" r="7" fill="#fff" stroke="#1E5397" stroke-width="2.5"/>
+    <circle cx="108" cy="94" r="7" fill="#fff" stroke="#1E5397" stroke-width="2.5"/>
+    <ellipse cx="44" cy="120" rx="13" ry="7" fill="url(#gAro)"/>
+    <ellipse cx="76" cy="120" rx="13" ry="7" fill="url(#gAro)"/>
+    <path d="M60 8 A46 46 0 1 1 59.9 8 Z" fill="url(#gAro)"/>
+    <path d="M86 88 Q98 100 96 108 Q84 104 78 94 Z" fill="url(#gAro)"/>
+    <circle cx="60" cy="54" r="36" fill="url(#gRosto)"/>
+    <ellipse cx="47" cy="50" rx="7" ry="9" fill="#0d2255"/>
+    <ellipse cx="73" cy="50" rx="7" ry="9" fill="#0d2255"/>
+    <circle cx="49.5" cy="46" r="2.6" fill="#fff"/><circle cx="75.5" cy="46" r="2.6" fill="#fff"/>
+    <path d="M39 40 Q47 33 55 39" stroke="#0d2255" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M65 39 Q73 33 81 40" stroke="#0d2255" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+    <path d="M47 74 Q60 64 73 74" stroke="#0d2255" stroke-width="4.2" fill="none" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- barras sóbrias: faixa 12-17 -->
+  <symbol id="bar-3" viewBox="0 0 120 70">
+    <rect x="8" y="42" width="30" height="20" rx="4" fill="#cfd7e8"/>
+    <rect x="45" y="26" width="30" height="36" rx="4" fill="#cfd7e8"/>
+    <rect x="82" y="8"  width="30" height="54" rx="4" fill="#20BF40"/>
+  </symbol>
+  <symbol id="bar-2" viewBox="0 0 120 70">
+    <rect x="8" y="42" width="30" height="20" rx="4" fill="#cfd7e8"/>
+    <rect x="45" y="26" width="30" height="36" rx="4" fill="#EDA704"/>
+    <rect x="82" y="8"  width="30" height="54" rx="4" fill="#cfd7e8"/>
+  </symbol>
+  <symbol id="bar-1" viewBox="0 0 120 70">
+    <rect x="8" y="42" width="30" height="20" rx="4" fill="#E23B2E"/>
+    <rect x="45" y="26" width="30" height="36" rx="4" fill="#cfd7e8"/>
+    <rect x="82" y="8"  width="30" height="54" rx="4" fill="#cfd7e8"/>
+  </symbol>
+
+  <!-- ícones-âncora dos eixos -->
+  <symbol id="eixo-casa" viewBox="0 0 48 48">
+    <path d="M24 6 L43 22 h-5 v19 a2 2 0 0 1-2 2H12a2 2 0 0 1-2-2V22H5Z" fill="currentColor"/>
+    <rect x="20" y="29" width="8" height="14" rx="1.5" fill="#fff" opacity=".85"/>
+  </symbol>
+  <symbol id="eixo-coracao" viewBox="0 0 48 48">
+    <path d="M24 42S6 30.5 6 19.2C6 12.4 11 8 17 8c3.6 0 6 1.9 7 3.6C25 9.9 27.4 8 31 8c6 0 11 4.4 11 11.2C42 30.5 24 42 24 42Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="eixo-estrela" viewBox="0 0 48 48">
+    <path d="M24 4l6 12.6 13.8 2-10 9.8 2.4 13.8L24 35.7 11.8 42.2 14.2 28.4 4.2 18.6l13.8-2Z" fill="currentColor"/>
+  </symbol>
+  <symbol id="eixo-escudo" viewBox="0 0 48 48">
+    <path d="M24 4l16 6v14c0 10.4-6.8 17.5-16 20-9.2-2.5-16-9.6-16-20V10Z" fill="currentColor"/>
+    <path d="M16 24.5l5.5 5.5L33 18.5" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/>
+  </symbol>
+  <symbol id="eixo-bussola" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="19" fill="currentColor"/>
+    <path d="M31 17l-4.4 9.6L17 31l4.4-9.6Z" fill="#fff" opacity=".9"/>
+  </symbol>
+  <symbol id="eixo-maos" viewBox="0 0 48 48">
+    <path d="M6 26c0-3 2-5 5-5h9l5 4 5-4h9c3 0 5 2 5 5v3c0 6-5 11-11 11H17C11 40 6 35 6 29Z" fill="currentColor"/>
+    <circle cx="16" cy="13" r="5" fill="currentColor"/><circle cx="32" cy="13" r="5" fill="currentColor"/>
+  </symbol>
+  <symbol id="eixo-livro" viewBox="0 0 48 48">
+    <path d="M6 9h14c2.8 0 4 1.6 4 4v27c0-2-1.4-3-4-3H6Z" fill="currentColor"/>
+    <path d="M42 9H28c-2.8 0-4 1.6-4 4v27c0-2 1.4-3 4-3h14Z" fill="currentColor" opacity=".72"/>
+  </symbol>
+  <symbol id="eixo-roda" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="5"/>
+    <circle cx="24" cy="24" r="5.5" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="3.4" stroke-linecap="round">
+      <path d="M24 8v8"/><path d="M24 32v8"/><path d="M8 24h8"/><path d="M32 24h8"/>
+    </g>
+  </symbol>
+  <symbol id="ico-vazio" viewBox="0 0 64 64">
+    <rect x="10" y="8" width="44" height="48" rx="5" fill="none" stroke="currentColor" stroke-width="3.5"/>
+    <path d="M20 22h24M20 32h24M20 42h14" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+  </symbol>
+</defs>
+</svg>
+
+<header>
+  <div class="headbar">
+    <svg class="logo" viewBox="0 0 120 120" role="img" aria-label="Ouvidoria-Geral do Município">
+      <defs>
+        <linearGradient id="ogmFill1" gradientUnits="userSpaceOnUse" x1="58" y1="12" x2="58" y2="100">
+          <stop offset="0" stop-color="#12A02E"/><stop offset="0.26" stop-color="#37C233"/>
+          <stop offset="0.46" stop-color="#8ABF29"/><stop offset="0.66" stop-color="#EFA306"/>
+          <stop offset="0.85" stop-color="#FB8B25"/><stop offset="1" stop-color="#FF5E40"/>
+        </linearGradient>
+        <linearGradient id="ogmRing1" gradientUnits="userSpaceOnUse" x1="20" y1="3" x2="80" y2="112">
+          <stop offset="0" stop-color="#4BA5FF"/><stop offset="0.5" stop-color="#1C7CFF"/>
+          <stop offset="1" stop-color="#1E5397"/>
+        </linearGradient>
+      </defs>
+      <path d="M83 88 C95 96 103 105 99 112 C90 111 79 101 73 93 Z" fill="url(#ogmRing1)"/>
+      <circle cx="58" cy="56" r="53" fill="url(#ogmRing1)"/>
+      <circle cx="58" cy="56" r="43.5" fill="url(#ogmFill1)"/>
+      <circle cx="37" cy="56" r="7.2" fill="#F7F7F4"/>
+      <circle cx="58" cy="56" r="7.2" fill="#F7F7F4"/>
+      <circle cx="79" cy="56" r="7.2" fill="#F7F7F4"/>
+    </svg>
+    <div class="htxt">
+      <div class="sub">Ouvidoria-Geral do Município</div>
+      <h1>Avaliação de Serviços Públicos</h1>
+    </div>
+    <a class="voltar" href="index.html">← OGM</a>
+  </div>
+  <div class="gradbar"></div>
+</header>
+<nav>
+  <div class="navwrap" id="nav">
+    <button data-v="painel" class="on">Painel</button>
+    <button data-v="aplicar">Aplicar</button>
+    <button data-v="respostas">Respostas</button>
+    <button data-v="encaminhamentos">Encaminhamentos</button>
+    <button data-v="gestao">Gestão do Sistema</button>
+    <button data-v="relatorios">Relatórios</button>
+  </div>
+</nav>
+<main id="app"></main>
+<div id="modal-root"></div>
+<div id="ent-root"></div>
+<button id="fila" class="fila-badge"></button>
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+/* ================================================================
+   CONFIGURAÇÃO
+   AV_*  → projeto NOVO, exclusivo da avaliação de serviços
+   OGM_* → projeto do Controle de Processos (leitura da taxonomia
+           e criação do processo ao aprovar um encaminhamento)
+================================================================ */
+const CONFIG = {
+  AV_SUPABASE_URL:  "",
+  AV_SUPABASE_ANON_KEY: "",
+  OGM_SUPABASE_URL: "https://bnuqszwvtsqymydcguom.supabase.co",
+  OGM_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJudXFzend2dHNxeW15ZGNndW9tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyMTg4MDUsImV4cCI6MjA5OTc5NDgwNX0.RB_SxHgVBLyE3fStVF17nGha7iqV4kL2wDAtT83ylpo"
+};
+
+/* ---------------- estado ---------------- */
+let sb=null, sbo=null;
+let AUX={};                 // taxonomia vinda do OGM
+let FORMS=[];               // formulários
+let ENTS=[];                // entrevistas (cabeçalhos)
+let ENCS=[];                // encaminhamentos
+let view="painel";
+let CHARTS=[];
+let FILTRO={form:"",unidade:"",faixa:"",de:"",ate:"",alerta:""};
+let GESTAO={aba:"formularios",form:null};   // estado do editor
+let ENT=null;                                // entrevista em curso
+
+const PAL=['#0056EF','#20BF40','#EDA704','#F26522','#E23B2E','#7A5CF0','#12A5B4','#9A6A00','#c34e15','#5a6480'];
+const ICONES=['casa','coracao','estrela','escudo','bussola','maos','livro','roda'];
+const TIPOS_PERG=[
+  ['escala3','Escala de 3 — positiva / intermediária / negativa'],
+  ['escala5','Escala de 5 — Likert'],
+  ['binaria','Binária — sim / não'],
+  ['multipla','Múltipla escolha — opções livres'],
+  ['texto_curto','Texto curto'],
+  ['texto_longo','Texto longo — pergunta aberta'],
+  ['data','Data'],
+  ['hora','Hora']
+];
+const MODOS=[['rostos','Rostos — crianças'],['barras','Barras — adolescentes'],['texto','Texto — adultos']];
+const STATUS_FORM={
+  rascunho:{rot:'Rascunho',chip:'gray'}, publicado:{rot:'Publicado',chip:'blue'},
+  ativo:{rot:'Ativo',chip:'green'}, encerrado:{rot:'Encerrado',chip:'amber'},
+  descartado:{rot:'Descartado',chip:'red'}
+};
+
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const app=$("#app"), modalRoot=$("#modal-root"), entRoot=$("#ent-root");
+
+function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2800);}
+function on(sel,ev,fn){const el=(typeof sel==="string")?$(sel):sel;if(el)el.addEventListener(ev,fn);return el;}
+function dbr(d){if(!d)return "—";const p=String(d).slice(0,10).split("-");return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d;}
+function hoje(){return new Date().toISOString().slice(0,10);}
+function num(v,c=2){return (v==null||isNaN(v))?"—":Number(v).toFixed(c).replace('.',',');}
+function byPt(f){return (a,b)=>String(f?a[f]:a).localeCompare(String(f?b[f]:b),'pt',{sensitivity:'base'});}
+function ico(nome,cls="eixo-ico",cor=null){
+  return `<svg class="${cls}" ${cor?`style="color:${cor}"`:''}><use href="#eixo-${nome||'casa'}"></use></svg>`;}
+
+/* ================================================================
+   BOOT
+================================================================ */
+(async function boot(){
+  if(!CONFIG.AV_SUPABASE_URL || !CONFIG.AV_SUPABASE_ANON_KEY) return telaSetup();
+  try{
+    sb=supabase.createClient(CONFIG.AV_SUPABASE_URL.trim(), CONFIG.AV_SUPABASE_ANON_KEY.trim());
+    sbo=supabase.createClient(CONFIG.OGM_SUPABASE_URL.trim(), CONFIG.OGM_SUPABASE_ANON_KEY.trim());
+  }catch(e){ return telaSetup("Não foi possível conectar: "+e.message); }
+
+  $$("#nav button").forEach(b=>b.onclick=()=>{ir(b.dataset.v);});
+  on("#fila","click",sincronizarFila);
+  window.addEventListener("online",()=>sincronizarFila(true));
+
+  await Promise.all([carregarFormularios(), carregarAuxOGM()]);
+  atualizarFila();
+  sincronizarFila(true);
+  ir("painel");
+})();
+
+function telaSetup(erro){
+  app.innerHTML=`<div class="card pad setup">
+    <h2 class="sec">Conectar ao banco de dados</h2>
+    <p class="lead">Este sistema usa um projeto Supabase próprio, separado do Controle de Processos.</p>
+    ${erro?`<div class="aviso r">${esc(erro)}</div>`:''}
+    <ol>
+      <li>Crie um projeto novo em <code>supabase.com</code>.</li>
+      <li>Abra <b>SQL Editor</b>, cole o arquivo <code>schema_avaliacao.sql</code> e execute.</li>
+      <li>Execute em seguida o <code>seed_casalar.sql</code> para carregar o formulário da Casa Lar.</li>
+      <li>Em <b>Project Settings → API</b>, copie a <b>Project URL</b> e a chave <b>anon public</b>.</li>
+      <li>Cole as duas no bloco <code>CONFIG</code>, no topo do arquivo <code>avaliacao.html</code>.</li>
+    </ol>
+    <div class="aviso b">A chave anônima é pública por natureza. A proteção dos dados vem das políticas
+    RLS e do fato de nenhum nome de criança ou adolescente ser gravado — as entrevistas são
+    identificadas apenas por código.</div>
+  </div>`;
+}
+
+function ir(v){
+  view=v;
+  $$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+  CHARTS.forEach(c=>{try{c.destroy()}catch(e){}});CHARTS=[];
+  app.scrollIntoView({block:"start"});
+  if(v==="painel")renderPainel();
+  else if(v==="aplicar")renderAplicar();
+  else if(v==="respostas")renderRespostas();
+  else if(v==="encaminhamentos")renderEncaminhamentos();
+  else if(v==="gestao")renderGestao();
+  else if(v==="relatorios")renderRelatorios();
+}
+
+/* ================================================================
+   CARGA DE DADOS
+================================================================ */
+async function carregarFormularios(){
+  const {data,error}=await sb.from("av_formularios").select("*").order("created_at",{ascending:false});
+  if(error){toast("Erro ao carregar formulários: "+error.message);return;}
+  FORMS=data||[];
+}
+async function carregarAuxOGM(){
+  try{
+    const {data,error}=await sbo.rpc('aux_todas');
+    if(!error&&data){AUX=data;return;}
+  }catch(e){}
+  const map={taxonomia:"aux_taxonomia",ods:"aux_ods",ods_metas:"aux_ods_metas",
+    servidores:"aux_servidores",orgaos:"aux_orgaos",unidades:"aux_unidades",
+    eixos:"aux_eixos",predios:"aux_predios"};
+  const ks=Object.keys(map);
+  const rs=await Promise.all(ks.map(k=>sbo.from(map[k]).select("*").then(r=>r).catch(()=>({data:null}))));
+  ks.forEach((k,i)=>AUX[k]=(rs[i]&&rs[i].data)||[]);
+}
+async function carregarEntrevistas(){
+  let q=sb.from("av_entrevistas").select("*").order("created_at",{ascending:false}).limit(5000);
+  const {data,error}=await q;
+  if(error){toast("Erro ao carregar entrevistas: "+error.message);return [];}
+  ENTS=data||[];return ENTS;
+}
+async function carregarEncaminhamentos(){
+  const {data,error}=await sb.from("av_encaminhamentos").select("*").order("created_at",{ascending:false});
+  if(error){toast("Erro: "+error.message);return [];}
+  ENCS=data||[];return ENCS;
+}
+async function carregarFormCompleto(id){
+  const {data,error}=await sb.rpc('av_formulario_completo',{p_id:id});
+  if(error||!data){toast("Erro ao abrir formulário: "+(error?error.message:"vazio"));return null;}
+  return data;
+}
+async function proximoCodigo(pref){
+  const {data,error}=await sb.rpc('av_proximo_codigo',{p_prefixo:pref});
+  if(error){ // fallback offline
+    const ano=new Date().getFullYear();
+    const n=Math.floor(Math.random()*9000)+1000;
+    return `${pref}-${ano}-L${n}`;
+  }
+  return data;
+}
+
+/* ================================================================
+   FILA OFFLINE
+================================================================ */
+const FILA_KEY="av_fila_v1";
+function lerFila(){try{return JSON.parse(localStorage.getItem(FILA_KEY)||"[]")}catch(e){return []}}
+function gravarFila(f){try{localStorage.setItem(FILA_KEY,JSON.stringify(f))}catch(e){}}
+function enfileirar(pacote){const f=lerFila();f.push(pacote);gravarFila(f);atualizarFila();}
+function atualizarFila(){
+  const n=lerFila().length, b=$("#fila");
+  b.classList.toggle("show",n>0);
+  b.textContent=n===1?"1 entrevista aguardando envio — tocar para enviar"
+                     :`${n} entrevistas aguardando envio — tocar para enviar`;
+}
+async function sincronizarFila(silencioso){
+  const f=lerFila();
+  if(!f.length){if(!silencioso)toast("Nada pendente para enviar.");return;}
+  if(!navigator.onLine){if(!silencioso)toast("Sem conexão. As entrevistas continuam guardadas no aparelho.");return;}
+  let ok=0;const resta=[];
+  for(const p of f){
+    const r=await gravarEntrevista(p.entrevista,p.respostas,true);
+    if(r)ok++;else resta.push(p);
+  }
+  gravarFila(resta);atualizarFila();
+  if(ok)toast(`${ok} entrevista(s) enviada(s).`);
+  else if(!silencioso)toast("Não foi possível enviar agora. Os dados continuam guardados.");
+  if(ok && (view==="respostas"||view==="painel"))ir(view);
+}
+
+async function gravarEntrevista(cab,resps,daFila){
+  try{
+    const {data,error}=await sb.from("av_entrevistas").insert(cab).select("id").single();
+    if(error)throw error;
+    const linhas=resps.map(r=>({...r,entrevista_id:data.id}));
+    if(linhas.length){
+      const {error:e2}=await sb.from("av_respostas").insert(linhas);
+      if(e2)throw e2;
+    }
+    return true;
+  }catch(e){
+    if(!daFila){enfileirar({entrevista:cab,respostas:resps});}
+    return false;
+  }
+}
+
+/* ================================================================
+   PAINEL
+================================================================ */
+function barraFiltros(extra){
+  const fs=FORMS.filter(f=>f.status!=="descartado");
+  const fSel=FORMS.find(f=>String(f.id)===String(FILTRO.form));
+  return `<div class="toolbar no-print">
+    <div class="fld"><span>Formulário</span>
+      <select id="f_form"><option value="">Todos</option>
+      ${fs.map(f=>`<option value="${f.id}" ${String(f.id)===String(FILTRO.form)?'selected':''}>${esc(f.nome)} · v${f.versao}</option>`).join("")}
+      </select></div>
+    <div class="fld"><span>Unidade</span>
+      <select id="f_unid"><option value="">Todas</option>
+      ${(window.__UNIDS||[]).map(u=>`<option value="${esc(u)}" ${u===FILTRO.unidade?'selected':''}>${esc(u)}</option>`).join("")}
+      </select></div>
+    <div class="fld"><span>Faixa / perfil</span>
+      <select id="f_faixa"><option value="">Todas</option>
+      ${(window.__FAIXAS||[]).map(u=>`<option value="${esc(u)}" ${u===FILTRO.faixa?'selected':''}>${esc(u)}</option>`).join("")}
+      </select></div>
+    <div class="fld"><span>De</span><input type="date" id="f_de" value="${FILTRO.de||''}"></div>
+    <div class="fld"><span>Até</span><input type="date" id="f_ate" value="${FILTRO.ate||''}"></div>
+    <div class="fld"><span>Alerta</span>
+      <select id="f_alerta">
+        <option value="">Todos</option>
+        <option value="1" ${FILTRO.alerta==="1"?'selected':''}>Somente com alerta</option>
+        <option value="0" ${FILTRO.alerta==="0"?'selected':''}>Sem alerta</option>
+      </select></div>
+    <button class="btn ghost" id="f_limpar">Limpar</button>
+    ${extra||''}
+  </div>`;
+}
+function ligarFiltros(cb){
+  const sync=()=>{
+    FILTRO.form=$("#f_form").value; FILTRO.unidade=$("#f_unid").value;
+    FILTRO.faixa=$("#f_faixa").value; FILTRO.de=$("#f_de").value;
+    FILTRO.ate=$("#f_ate").value; FILTRO.alerta=$("#f_alerta").value;
+    cb();
+  };
+  ["#f_form","#f_unid","#f_faixa","#f_de","#f_ate","#f_alerta"].forEach(s=>on(s,"change",sync));
+  on("#f_limpar","click",()=>{FILTRO={form:"",unidade:"",faixa:"",de:"",ate:"",alerta:""};cb();});
+}
+function aplicaFiltro(lista){
+  return lista.filter(e=>{
+    if(FILTRO.form && String(e.formulario_id)!==String(FILTRO.form))return false;
+    if(FILTRO.unidade && e.unidade_codigo!==FILTRO.unidade)return false;
+    if(FILTRO.faixa && e.faixa_codigo!==FILTRO.faixa)return false;
+    if(FILTRO.de && e.data_entrevista<FILTRO.de)return false;
+    if(FILTRO.ate && e.data_entrevista>FILTRO.ate)return false;
+    if(FILTRO.alerta==="1" && !e.alerta)return false;
+    if(FILTRO.alerta==="0" && e.alerta)return false;
+    return true;
+  });
+}
+function popularListasFiltro(){
+  window.__UNIDS=[...new Set(ENTS.map(e=>e.unidade_codigo).filter(Boolean))].sort(byPt());
+  window.__FAIXAS=[...new Set(ENTS.map(e=>e.faixa_codigo).filter(Boolean))].sort(byPt());
+}
+
+async function renderPainel(){
+  app.innerHTML=`<div class="card pad"><p class="lead">Carregando indicadores…</p></div>`;
+  await carregarEntrevistas();
+  popularListasFiltro();
+  const {data:resp}=await sb.from("av_respostas")
+    .select("entrevista_id,eixo_codigo,codigo,tipo,pergunta_cod,enunciado").limit(60000);
+  window.__RESP=resp||[];
+  pintarPainel();
+}
+function pintarPainel(){
+  const ents=aplicaFiltro(ENTS);
+  const ids=new Set(ents.map(e=>e.id));
+  const rs=(window.__RESP||[]).filter(r=>ids.has(r.entrevista_id));
+  const val=rs.filter(r=>r.codigo>=1&&r.codigo<=5);
+  const nr=rs.filter(r=>r.codigo===0||r.codigo===9);
+  const idx=val.length?val.reduce((s,r)=>s+r.codigo,0)/val.length:null;
+  const alertas=ents.filter(e=>e.alerta).length;
+  const tAlerta=ents.length?(alertas/ents.length*100):0;
+  const tNR=rs.length?(nr.length/rs.length*100):0;
+
+  app.innerHTML=`
+  ${barraFiltros()}
+  <div class="kpis">
+    <div class="card kpi"><div class="n">${ents.length}</div><div class="l">Entrevistas</div>
+      <div class="sub2">${[...new Set(ents.map(e=>e.unidade_codigo).filter(Boolean))].length} unidade(s)</div></div>
+    <div class="card kpi g"><div class="n">${idx==null?'—':num(idx)}</div><div class="l">Índice geral de satisfação</div>
+      <div class="sub2">${val.length} respostas fechadas</div></div>
+    <div class="card kpi r"><div class="n">${num(tAlerta,1)}%</div><div class="l">Taxa de alerta</div>
+      <div class="sub2">${alertas} entrevista(s)</div></div>
+    <div class="card kpi y"><div class="n">${num(tNR,1)}%</div><div class="l">Taxa de não-resposta</div>
+      <div class="sub2">recusa e não compreensão</div></div>
+    <div class="card kpi b"><div class="n">${FORMS.filter(f=>f.status==='ativo').length}</div>
+      <div class="l">Formulários ativos</div><div class="sub2">de ${FORMS.length} cadastrados</div></div>
+  </div>
+  ${alertas?`<div class="aviso r">${alertas} entrevista(s) acionaram o Protocolo de Alerta. Verifique a aba Respostas.</div>`:''}
+  <div class="grid2">
+    <div class="card pad"><h2 class="sec">Índice por eixo</h2>
+      <p class="lead">Média das respostas fechadas em cada dimensão avaliada.</p>
+      <div id="bx_eixo"></div></div>
+    <div class="card pad"><h2 class="sec">Índice por unidade</h2>
+      <p class="lead">Permite comparar o desempenho entre os locais de aplicação.</p>
+      <div style="height:260px"><canvas id="c_unid"></canvas></div></div>
+  </div>
+  <div class="grid2" style="margin-top:18px">
+    <div class="card pad"><h2 class="sec">Índice por faixa ou perfil</h2>
+      <p class="lead">Indica também se o instrumento está adequado a cada público.</p>
+      <div style="height:260px"><canvas id="c_faixa"></canvas></div></div>
+    <div class="card pad"><h2 class="sec">Distribuição das respostas</h2>
+      <p class="lead">Quantas respostas caíram em cada código da escala.</p>
+      <div style="height:260px"><canvas id="c_dist"></canvas></div></div>
+  </div>
+  <div class="card pad" style="margin-top:18px">
+    <h2 class="sec">Evolução entre períodos</h2>
+    <p class="lead">Compara o índice geral de cada formulário ao longo do tempo. Cada ponto é uma edição da avaliação.</p>
+    <div style="height:280px"><canvas id="c_evol"></canvas></div>
+  </div>
+  <div class="card pad" style="margin-top:18px">
+    <h2 class="sec">Perguntas com pior avaliação</h2>
+    <p class="lead">Ordenadas da menor para a maior média. São os pontos que mais pedem ação.</p>
+    <div id="bx_perg"></div>
+  </div>`;
+
+  ligarFiltros(pintarPainel);
+  if(!ents.length){
+    $("#bx_eixo").innerHTML=$("#bx_perg").innerHTML=
+      `<div class="empty"><svg width="56" height="56"><use href="#ico-vazio"></use></svg>
+       <div>Nenhuma entrevista no recorte selecionado.</div></div>`;
+    return;
+  }
+
+  // --- barras por eixo
+  const porEixo={};
+  val.filter(r=>r.eixo_codigo).forEach(r=>{(porEixo[r.eixo_codigo]=porEixo[r.eixo_codigo]||[]).push(r.codigo);});
+  const linhas=Object.entries(porEixo)
+    .map(([k,v])=>[k,v.reduce((a,b)=>a+b,0)/v.length,v.length])
+    .sort((a,b)=>b[1]-a[1]);
+  $("#bx_eixo").innerHTML=linhas.length?linhas.map(([k,m,n])=>{
+    const pct=Math.max(4,((m-1)/2)*100);
+    const cor=m>=2.5?'var(--verde)':m>=2?'var(--amarelo)':'var(--vermelho)';
+    return `<div class="barrinha"><div class="lbl">${esc(k)} <span style="color:var(--muted)">(${n})</span></div>
+      <div class="track"><div class="fill" style="width:${pct}%;background:${cor}"></div></div>
+      <div class="val">${num(m)}</div></div>`;}).join("")
+    :`<div class="empty">Sem respostas fechadas classificadas por eixo.</div>`;
+
+  // --- por unidade
+  const pu={};ents.forEach(e=>{if(e.unidade_codigo)pu[e.unidade_codigo]=pu[e.unidade_codigo]||[];});
+  rs.filter(r=>r.codigo>=1&&r.codigo<=5).forEach(r=>{
+    const e=ents.find(x=>x.id===r.entrevista_id);
+    if(e&&e.unidade_codigo)pu[e.unidade_codigo].push(r.codigo);});
+  grafBarra("c_unid",Object.keys(pu),Object.values(pu).map(v=>v.length?(v.reduce((a,b)=>a+b,0)/v.length):0));
+
+  // --- por faixa
+  const pf={};ents.forEach(e=>{if(e.faixa_codigo)pf[e.faixa_codigo]=pf[e.faixa_codigo]||[];});
+  rs.filter(r=>r.codigo>=1&&r.codigo<=5).forEach(r=>{
+    const e=ents.find(x=>x.id===r.entrevista_id);
+    if(e&&e.faixa_codigo)pf[e.faixa_codigo].push(r.codigo);});
+  grafBarra("c_faixa",Object.keys(pf),Object.values(pf).map(v=>v.length?(v.reduce((a,b)=>a+b,0)/v.length):0));
+
+  // --- distribuição
+  const dist={};rs.forEach(r=>{if(r.codigo!=null)dist[r.codigo]=(dist[r.codigo]||0)+1;});
+  const rotDist={0:'Recusa (0)',1:'Negativa (1)',2:'Intermediária (2)',3:'Positiva (3)',
+                 4:'Alta (4)',5:'Muito alta (5)',9:'Não compreendeu (9)',99:'Alerta (99)'};
+  const corDist={0:'#9aa4bd',1:'#E23B2E',2:'#EDA704',3:'#20BF40',4:'#12A5B4',5:'#0056EF',9:'#7A5CF0',99:'#8b1a10'};
+  const kd=Object.keys(dist).sort((a,b)=>a-b);
+  criarChart("c_dist",{type:'bar',
+    data:{labels:kd.map(k=>rotDist[k]||k),datasets:[{data:kd.map(k=>dist[k]),
+      backgroundColor:kd.map(k=>corDist[k]||'#0056EF'),borderRadius:6}]},
+    options:{indexAxis:'y',plugins:{legend:{display:false}},
+      scales:{x:{beginAtZero:true,ticks:{precision:0}}},maintainAspectRatio:false}});
+
+  // --- evolução
+  const grupos={};
+  ents.forEach(e=>{
+    const f=FORMS.find(x=>x.id===e.formulario_id);if(!f)return;
+    const base=f.origem_id?(FORMS.find(x=>x.id===f.origem_id)||f):f;
+    const serie=base.nome.replace(/ \(v\d+\)$/,'');
+    const rotulo=`${f.data_inicio?dbr(f.data_inicio).slice(3):''} v${f.versao}`;
+    grupos[serie]=grupos[serie]||{};
+    (grupos[serie][rotulo]=grupos[serie][rotulo]||[]);
+  });
+  rs.filter(r=>r.codigo>=1&&r.codigo<=5).forEach(r=>{
+    const e=ents.find(x=>x.id===r.entrevista_id);if(!e)return;
+    const f=FORMS.find(x=>x.id===e.formulario_id);if(!f)return;
+    const base=f.origem_id?(FORMS.find(x=>x.id===f.origem_id)||f):f;
+    const serie=base.nome.replace(/ \(v\d+\)$/,'');
+    const rotulo=`${f.data_inicio?dbr(f.data_inicio).slice(3):''} v${f.versao}`;
+    if(grupos[serie]&&grupos[serie][rotulo])grupos[serie][rotulo].push(r.codigo);
+  });
+  const rotulos=[...new Set(Object.values(grupos).flatMap(g=>Object.keys(g)))].sort();
+  const ds=Object.entries(grupos).map(([nome,g],i)=>({
+    label:nome,borderColor:PAL[i%PAL.length],backgroundColor:PAL[i%PAL.length],
+    tension:.3,spanGaps:true,pointRadius:5,
+    data:rotulos.map(r=>{const v=g[r];return (v&&v.length)?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2):null;})
+  }));
+  criarChart("c_evol",{type:'line',data:{labels:rotulos,datasets:ds},
+    options:{maintainAspectRatio:false,scales:{y:{suggestedMin:1,suggestedMax:3}},
+      plugins:{legend:{position:'bottom'}}}});
+
+  // --- piores perguntas
+  const pp={};
+  val.forEach(r=>{const k=r.pergunta_cod+"|"+(r.enunciado||"");(pp[k]=pp[k]||[]).push(r.codigo);});
+  const piores=Object.entries(pp).map(([k,v])=>{
+    const [cod,en]=k.split("|");
+    return {cod,en,m:v.reduce((a,b)=>a+b,0)/v.length,n:v.length};
+  }).filter(x=>x.n>=1).sort((a,b)=>a.m-b.m).slice(0,10);
+  $("#bx_perg").innerHTML=piores.length?piores.map(p=>{
+    const pct=Math.max(4,((p.m-1)/2)*100);
+    const cor=p.m>=2.5?'var(--verde)':p.m>=2?'var(--amarelo)':'var(--vermelho)';
+    return `<div class="barrinha"><div class="lbl" title="${esc(p.en)}">
+      <b>${esc(p.cod)}</b> ${esc(p.en.length>58?p.en.slice(0,58)+'…':p.en)}</div>
+      <div class="track"><div class="fill" style="width:${pct}%;background:${cor}"></div></div>
+      <div class="val">${num(p.m)}</div></div>`;}).join("")
+    :`<div class="empty">Sem respostas fechadas no recorte.</div>`;
+}
+function criarChart(id,cfg){
+  const el=document.getElementById(id);if(!el)return;
+  CHARTS.push(new Chart(el.getContext('2d'),cfg));
+}
+function grafBarra(id,labels,dados){
+  criarChart(id,{type:'bar',
+    data:{labels,datasets:[{data:dados.map(d=>+Number(d).toFixed(2)),
+      backgroundColor:dados.map(d=>d>=2.5?'#20BF40':d>=2?'#EDA704':'#E23B2E'),borderRadius:6}]},
+    options:{plugins:{legend:{display:false}},maintainAspectRatio:false,
+      scales:{y:{beginAtZero:true,suggestedMax:3}}}});
+}
+
+/* ================================================================
+   APLICAR — seleção e modo entrevista
+================================================================ */
+function renderAplicar(){
+  const ativos=FORMS.filter(f=>f.status==="ativo");
+  const pub=FORMS.filter(f=>f.status==="publicado");
+  app.innerHTML=`<div class="card pad">
+    <h2 class="sec">Aplicar avaliação</h2>
+    <p class="lead">Escolha o formulário, a unidade visitada e o perfil do entrevistado.
+      A tela seguinte ocupa todo o aparelho, com botões dimensionados para uso em tablet.</p>
+    ${ativos.length?ativos.map(f=>cardForm(f,true)).join(""):
+      `<div class="empty"><svg width="56" height="56"><use href="#ico-vazio"></use></svg>
+       <div>Nenhum formulário ativo no momento.</div>
+       <div style="margin-top:6px;font-size:12.5px">Ative um formulário em Gestão do Sistema para começar a coletar.</div></div>`}
+    ${pub.length?`<div class="aviso y" style="margin-top:18px">
+      ${pub.length} formulário(s) publicado(s) aguardando ativação. Defina o período em Gestão do Sistema.</div>`:''}
+  </div>`;
+  $$("[data-abrir]").forEach(b=>b.onclick=()=>abrirPreparo(+b.dataset.abrir));
+}
+function cardForm(f,acao){
+  const st=STATUS_FORM[f.status]||STATUS_FORM.rascunho;
+  return `<div class="lista-item form-card">
+    <div class="mt">
+      <b>${esc(f.nome)}</b>
+      <div class="m2">${esc(f.servico||'—')}</div>
+      <div class="m2">${esc(f.codigo)} · versão ${f.versao} ·
+        ${f.data_inicio?`${dbr(f.data_inicio)} a ${dbr(f.data_fim)}`:'período não definido'}</div>
+    </div>
+    <span class="chip ${st.chip}">${st.rot}</span>
+    ${acao?`<button class="btn primary" data-abrir="${f.id}">Iniciar entrevista</button>`:''}
+  </div>`;
+}
+
+async function abrirPreparo(id){
+  const D=await carregarFormCompleto(id);if(!D)return;
+  const serv=(AUX.servidores||[]).map(s=>s.nome).sort(byPt());
+  modal(`Preparar entrevista · ${esc(D.formulario.nome)}`,`
+    <div class="aviso b">Confirme os termos antes de iniciar: consentimento do responsável legal
+      (Anexo 4) e assentimento da criança ou adolescente (Anexo 5). Para funcionários, o Termo de
+      Consentimento Livre e Esclarecido (Anexo 3). O ambiente deve estar reservado e sem terceiros.</div>
+    <div class="frow">
+      <div><label class="f">Unidade visitada</label>
+        <select id="p_unid">${(D.unidades||[]).map(u=>
+          `<option value="${esc(u.codigo)}">${esc(u.codigo)} — ${esc(u.nome)}</option>`).join("")}</select></div>
+      <div><label class="f">Perfil / faixa etária</label>
+        <select id="p_faixa">${(D.faixas||[]).map(x=>
+          `<option value="${esc(x.codigo)}">${esc(x.nome)}</option>`).join("")}</select></div>
+    </div>
+    <div class="frow">
+      <div><label class="f">Entrevistador(a) responsável</label>
+        <select id="p_ent"><option value="">Selecione</option>
+        ${serv.map(s=>`<option>${esc(s)}</option>`).join("")}</select></div>
+      <div><label class="f">Data da entrevista</label>
+        <input type="date" id="p_data" value="${hoje()}"></div>
+    </div>
+    <div id="p_orient" class="aviso y" style="display:none"></div>`,
+    [{rot:"Cancelar",cls:"ghost",fn:fecharModal},
+     {rot:"Iniciar entrevista",cls:"primary",fn:()=>{
+        const ent=$("#p_ent").value;
+        if(!ent){toast("Informe quem está aplicando a entrevista.");return;}
+        iniciarEntrevista(D,$("#p_unid").value,$("#p_faixa").value,ent,$("#p_data").value);
+     }}]);
+  const mostra=()=>{
+    const fx=(D.faixas||[]).find(x=>x.codigo===$("#p_faixa").value);
+    const el=$("#p_orient");
+    if(fx&&fx.orientacao){el.style.display="block";
+      el.innerHTML=`<b>Orientação ao entrevistador</b><br>${esc(fx.orientacao)}
+        ${fx.duracao_min?`<br>Duração estimada: ${fx.duracao_min} minutos.`:''}`;}
+    else el.style.display="none";
+  };
+  on("#p_faixa","change",mostra);mostra();
+}
+
+async function iniciarEntrevista(D,unid,faixa,entrevistador,data){
+  fecharModal();
+  const un=(D.unidades||[]).find(u=>u.codigo===unid)||{};
+  const fx=(D.faixas||[]).find(f=>f.codigo===faixa)||{};
+  const perguntas=(D.perguntas||[])
+    .filter(q=>!q.faixas||!q.faixas.length||q.faixas.includes(faixa))
+    .sort((a,b)=>(a.ordem-b.ordem)||(a.id-b.id));
+  if(!perguntas.length){toast("Este perfil não tem perguntas vinculadas.");return;}
+  const codigo=await proximoCodigo('AVA');
+  ENT={D,unid,un,faixa,fx,entrevistador,data,perguntas,codigo,
+       i:0,respostas:{},hora_inicio:new Date().toTimeString().slice(0,5),etapa:"perguntas"};
+  pintarEntrevista();
+}
+
+function blocoDe(q){return (ENT.D.blocos||[]).find(b=>b.id===q.bloco_id)||{};}
+function eixoDe(q){
+  const E=ENT.D.eixos||[];
+  if(q.eixo_id){const e=E.find(x=>x.id===q.eixo_id);if(e)return e;}
+  const b=blocoDe(q);return E.find(e=>e.id===b.eixo_id)||{};
+}
+
+function pintarEntrevista(){
+  if(ENT.etapa==="fecho")return pintarFecho();
+  const q=ENT.perguntas[ENT.i], b=blocoDe(q), e=eixoDe(q);
+  const total=ENT.perguntas.length;
+  const r=ENT.respostas[q.codigo]||{};
+  const aberta=(q.tipo==="texto_longo"||q.tipo==="texto_curto");
+  const modo=ENT.fx.modo_visual||"texto";
+
+  entRoot.innerHTML=`<div class="ent-wrap">
+    <div class="ent-top">
+      <span class="id">${esc(ENT.codigo)}</span>
+      <span class="ent-passo">${esc(ENT.un.codigo||'')} · ${esc(ENT.fx.nome||'')}</span>
+      <div class="ent-prog"><i style="width:${(ENT.i/total*100).toFixed(1)}%"></i></div>
+      <span class="ent-passo">${ENT.i+1} de ${total}</span>
+      <button class="btn danger sm" id="e_sair">Interromper</button>
+    </div>
+    <div class="ent-body"><div class="ent-inner">
+      <div class="ent-bloco">
+        ${e.icone?ico(e.icone,"eixo-ico lg",e.cor||'#0056EF'):''}
+        <div><h3>${esc(b.titulo||'')}</h3>
+          ${e.nome?`<div style="font-size:12.5px;color:var(--muted)">${esc(e.codigo)} · ${esc(e.nome)}</div>`:''}</div>
+      </div>
+      <div class="ent-perg">${esc(q.enunciado)}</div>
+      ${q.orientacao?`<div class="ent-orient"><b>Orientação</b> — ${esc(q.orientacao)}</div>`:''}
+      ${aberta?`<div class="ent-aberta">
+          <textarea id="e_txt" maxlength="5000" placeholder="Transcreva a fala textualmente, entre aspas. Não interprete nem parafraseie.">${esc(r.texto||'')}</textarea>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px" id="e_cont"></div>
+        </div>`
+       :`<div class="ent-opts">${opcoesHtml(q,modo,r)}</div>`}
+      <div class="ent-esp">
+        <button class="esp ${r.codigo===0?'on':''}" data-esp="0">Não quis responder <b>(0)</b></button>
+        <button class="esp ${r.codigo===9?'on':''}" data-esp="9">Não compreendeu <b>(9)</b></button>
+        <button class="esp alerta ${r.alerta?'on':''}" data-esp="99">Situação de alerta <b>(99)</b></button>
+      </div>
+      ${q.critica?`<div class="aviso y" style="margin-top:18px">Pergunta crítica: resposta negativa
+        aciona o Protocolo de Alerta automaticamente.</div>`:''}
+    </div></div>
+    <div class="ent-foot">
+      <button class="btn ghost" id="e_ant" ${ENT.i===0?'disabled':''}>Voltar</button>
+      <span class="ent-passo">${q.obrigatoria?'Resposta obrigatória':'Resposta opcional'}</span>
+      <button class="btn primary" id="e_prox">${ENT.i===total-1?'Concluir perguntas':'Avançar'}</button>
+    </div>
+  </div>`;
+
+  $$("[data-opt]").forEach(btn=>btn.onclick=()=>{
+    const cod=+btn.dataset.opt;
+    ENT.respostas[q.codigo]={codigo:cod,rotulo:btn.dataset.rot,
+      alerta:(q.critica&&cod===1)||((ENT.respostas[q.codigo]||{}).alerta===true)};
+    pintarEntrevista();
+    if(q.tipo!=="multipla")setTimeout(()=>{if(ENT.i<total-1)avancar();},260);
+  });
+  $$("[data-esp]").forEach(btn=>btn.onclick=()=>{
+    const v=+btn.dataset.esp;
+    const at=ENT.respostas[q.codigo]||{};
+    if(v===99){
+      if(at.alerta){at.alerta=false;}
+      else{at.alerta=true;
+        const d=prompt("Descreva de forma objetiva e factual o que motivou o alerta.\nPreserve as falas textuais entre aspas.",ENT.alerta_desc||"");
+        if(d!==null)ENT.alerta_desc=((ENT.alerta_desc?ENT.alerta_desc+"\n\n":"")+`[${q.codigo}] ${d}`);
+      }
+      ENT.respostas[q.codigo]=at;
+    }else{
+      ENT.respostas[q.codigo]={codigo:(at.codigo===v?null:v),rotulo:(v===0?'Não quis responder':'Não compreendeu'),alerta:at.alerta||false};
+    }
+    pintarEntrevista();
+  });
+  const ta=$("#e_txt");
+  if(ta){
+    const cont=()=>{$("#e_cont").textContent=`${ta.value.length} de 5.000 caracteres`;};
+    ta.oninput=()=>{ENT.respostas[q.codigo]={texto:ta.value,alerta:(ENT.respostas[q.codigo]||{}).alerta||false};cont();};
+    cont();ta.focus();
+  }
+  on("#e_ant","click",()=>{if(ENT.i>0){ENT.i--;pintarEntrevista();}});
+  on("#e_prox","click",avancar);
+  on("#e_sair","click",()=>{
+    if(confirm("Interromper a entrevista?\n\nOs dados já coletados podem ser salvos — o motivo da interrupção deve ser registrado nas observações."))
+      {ENT.etapa="fecho";ENT.interrompida=true;pintarEntrevista();}
+  });
+
+  function avancar(){
+    const at=ENT.respostas[q.codigo]||{};
+    const vazio=aberta?!(at.texto||"").trim():(at.codigo==null);
+    if(q.obrigatoria&&vazio&&!at.alerta){toast("Esta pergunta é obrigatória. Se não houver resposta, marque 0 ou 9.");return;}
+    if(ENT.i<total-1){ENT.i++;pintarEntrevista();}
+    else{ENT.etapa="fecho";pintarEntrevista();}
+  }
+}
+
+function opcoesHtml(q,modo,r){
+  let ops=q.opcoes||[];
+  if(!ops.length){
+    if(q.tipo==="escala3")ops=[{rotulo:"Sim",codigo:3},{rotulo:"Mais ou menos",codigo:2},{rotulo:"Não",codigo:1}];
+    else if(q.tipo==="binaria")ops=[{rotulo:"Sim",codigo:3},{rotulo:"Não",codigo:1}];
+    else if(q.tipo==="escala5")ops=[5,4,3,2,1].map(n=>({rotulo:String(n),codigo:n}));
+  }
+  if(q.tipo==="data")return `<input type="date" id="e_dt" style="font-size:20px;padding:16px">`;
+  if(q.tipo==="hora")return `<input type="time" id="e_hr" style="font-size:20px;padding:16px">`;
+
+  const ordem=[...ops].sort((a,b)=>(b.codigo||0)-(a.codigo||0));
+  return ordem.map(o=>{
+    const on=r.codigo===o.codigo?'on':'';
+    let visual='';
+    if(modo==="rostos"&&o.codigo>=1&&o.codigo<=3){
+      const s=o.codigo===3?'feliz':o.codigo===2?'neutro':'triste';
+      visual=`<svg viewBox="0 0 120 130"><use href="#ico-${s}"></use></svg>`;
+    }else if(modo==="barras"&&o.codigo>=1&&o.codigo<=3){
+      visual=`<svg viewBox="0 0 120 70"><use href="#bar-${o.codigo}"></use></svg>`;
+    }
+    const cls=modo==="barras"?"opt barra":(visual?"opt":"opt txt");
+    return `<button type="button" class="${cls} ${on}" data-opt="${o.codigo}" data-rot="${esc(o.rotulo)}">
+      ${visual}<span class="rot">${esc(o.rotulo)}</span></button>`;
+  }).join("");
+}
+
+function pintarFecho(){
+  const sinais=["hesitação prolongada","choro","mudança brusca de postura",
+    "medo ao responder","relato interrompido","silêncio prolongado","outro"];
+  const temAlerta=Object.values(ENT.respostas).some(r=>r.alerta)||!!ENT.alerta_desc;
+  entRoot.innerHTML=`<div class="ent-wrap">
+    <div class="ent-top">
+      <span class="id">${esc(ENT.codigo)}</span>
+      <span class="ent-passo">Observações do(a) entrevistador(a)</span>
+      <div class="ent-prog"><i style="width:100%"></i></div>
+    </div>
+    <div class="ent-body"><div class="ent-inner">
+      ${ENT.interrompida?`<div class="aviso y">Entrevista interrompida. Os dados já coletados
+        permanecem válidos — registre o motivo da interrupção nas observações gerais.</div>`:''}
+      ${temAlerta?`<div class="aviso r"><b>Protocolo de Alerta acionado.</b> Comunique a coordenação
+        da Ouvidoria-Geral pelo canal seguro antes de deixar a unidade. Não compartilhe o conteúdo
+        com a coordenação da unidade.</div>`:''}
+      <fieldset><legend>Contexto da entrevista</legend>
+        <div class="frow">
+          <div><label class="f">Houve interrupções?</label>
+            <select id="o_int"><option value="0">Não</option><option value="1">Sim</option></select></div>
+          <div><label class="f">Presença de terceiros no ambiente?</label>
+            <select id="o_ter"><option value="0">Não</option><option value="1">Sim</option></select></div>
+        </div>
+        <div class="frow one"><div><label class="f">Descreva, se houve</label>
+          <textarea id="o_desc" placeholder="Ex.: educador entrou na sala às 14h20; entrevista retomada em seguida."></textarea></div></div>
+      </fieldset>
+      <fieldset><legend>Compreensão e linguagem</legend>
+        <div class="frow">
+          <div><label class="f">O entrevistado demonstrou compreender as perguntas?</label>
+            <select id="o_comp"><option value="sim">Sim</option>
+              <option value="parcial">Parcialmente</option>
+              <option value="dificuldade">Com dificuldade</option></select></div>
+          <div><label class="f">Hora de encerramento</label>
+            <input type="time" id="o_fim" value="${new Date().toTimeString().slice(0,5)}"></div>
+        </div>
+        <div class="frow one"><div><label class="f">Adaptações de linguagem realizadas</label>
+          <textarea id="o_adap" placeholder="Ex.: 'futuro' substituído por 'quando você crescer'."></textarea></div></div>
+      </fieldset>
+      <fieldset><legend>Sinais não verbais relevantes</legend>
+        ${sinais.map((s,i)=>`<label class="check"><input type="checkbox" class="o_sin" value="${esc(s)}"> ${esc(s)}</label>`).join("")}
+      </fieldset>
+      <fieldset><legend>Situação de alerta</legend>
+        <label class="check"><input type="checkbox" id="o_alerta" ${temAlerta?'checked':''}>
+          <span>Indício de situação de alerta (código 99)
+          <span class="hint">Violação de direitos, maus-tratos, negligência grave ou risco imediato.</span></span></label>
+        <textarea id="o_alerta_desc" placeholder="Descrição objetiva e factual, com as falas textuais entre aspas.">${esc(ENT.alerta_desc||'')}</textarea>
+      </fieldset>
+      <fieldset><legend>Observações gerais</legend>
+        <textarea id="o_obs" style="min-height:110px" placeholder="Contextualizações relevantes para a interpretação das respostas."></textarea>
+      </fieldset>
+    </div></div>
+    <div class="ent-foot">
+      <button class="btn ghost" id="o_voltar">Voltar às perguntas</button>
+      <button class="btn ok" id="o_salvar">Salvar entrevista</button>
+    </div>
+  </div>`;
+  on("#o_voltar","click",()=>{ENT.etapa="perguntas";pintarEntrevista();});
+  on("#o_salvar","click",salvarEntrevista);
+}
+
+async function salvarEntrevista(){
+  const btn=$("#o_salvar");btn.disabled=true;btn.textContent="Salvando…";
+  const alerta=$("#o_alerta").checked;
+  const cab={
+    codigo:ENT.codigo, formulario_id:ENT.D.formulario.id, formulario_versao:ENT.D.formulario.versao,
+    unidade_codigo:ENT.unid, unidade_nome:ENT.un.nome||null,
+    faixa_codigo:ENT.faixa, faixa_nome:ENT.fx.nome||null,
+    entrevistador:ENT.entrevistador, data_entrevista:ENT.data,
+    hora_inicio:ENT.hora_inicio, hora_fim:$("#o_fim").value||null,
+    interrupcoes:$("#o_int").value==="1", terceiros:$("#o_ter").value==="1",
+    interrupcoes_desc:$("#o_desc").value.trim()||null,
+    compreensao:$("#o_comp").value,
+    sinais_nao_verbais:$$(".o_sin").filter(c=>c.checked).map(c=>c.value),
+    adaptacao_linguagem:$("#o_adap").value.trim()||null,
+    observacoes:($("#o_obs").value.trim()+(ENT.interrompida?"\n\n[Entrevista interrompida]":"")).trim()||null,
+    alerta, alerta_desc:alerta?($("#o_alerta_desc").value.trim()||null):null,
+    alerta_origem:alerta?'manual':null, status:'concluida'
+  };
+  const resps=ENT.perguntas.map(q=>{
+    const r=ENT.respostas[q.codigo]||{};
+    const b=blocoDe(q), e=eixoDe(q);
+    return {pergunta_id:q.id, pergunta_cod:q.codigo, enunciado:q.enunciado,
+      eixo_codigo:e.codigo||null, bloco_titulo:b.titulo||null, tipo:q.tipo,
+      codigo:(r.alerta&&r.codigo==null)?99:(r.codigo??null),
+      rotulo:r.rotulo||null, texto:r.texto||null, alerta:!!r.alerta};
+  });
+  const ok=await gravarEntrevista(cab,resps,false);
+  entRoot.innerHTML="";ENT=null;
+  if(ok)toast("Entrevista registrada.");
+  else{atualizarFila();toast("Sem conexão: a entrevista ficou guardada no aparelho e será enviada depois.");}
+  ir("aplicar");
+}
+
+/* ================================================================
+   RESPOSTAS
+================================================================ */
+async function renderRespostas(){
+  app.innerHTML=`<div class="card pad"><p class="lead">Carregando entrevistas…</p></div>`;
+  await carregarEntrevistas();
+  popularListasFiltro();
+  pintarRespostas();
+}
+function pintarRespostas(){
+  const lista=aplicaFiltro(ENTS);
+  app.innerHTML=`
+  ${barraFiltros(`<button class="btn ghost" id="r_xlsx">Exportar planilha</button>`)}
+  <div class="card pad">
+    <h2 class="sec">Entrevistas registradas</h2>
+    <p class="lead">${lista.length} de ${ENTS.length} entrevistas no recorte. As linhas em vermelho
+      acionaram o Protocolo de Alerta. Toque numa linha para ver todas as respostas.</p>
+    ${lista.length?`<div class="tblwrap"><table>
+      <thead><tr><th>Código</th><th>Data</th><th>Unidade</th><th>Perfil</th>
+        <th>Entrevistador(a)</th><th>Alerta</th><th>Encaminhado</th></tr></thead>
+      <tbody>${lista.map(e=>`<tr class="${e.alerta?'alerta':''}" data-ent="${e.id}">
+        <td><b>${esc(e.codigo)}</b></td><td>${dbr(e.data_entrevista)}</td>
+        <td>${esc(e.unidade_codigo||'—')}</td><td>${esc(e.faixa_nome||e.faixa_codigo||'—')}</td>
+        <td>${esc(e.entrevistador||'—')}</td>
+        <td>${e.alerta?'<span class="chip red">Alerta</span>':'<span class="chip gray">—</span>'}</td>
+        <td>${e.encaminhamento_id?'<span class="chip purple">Sim</span>':'—'}</td>
+      </tr>`).join("")}</tbody></table></div>`
+     :`<div class="empty"><svg width="56" height="56"><use href="#ico-vazio"></use></svg>
+        <div>Nenhuma entrevista no recorte selecionado.</div></div>`}
+  </div>`;
+  ligarFiltros(pintarRespostas);
+  $$("[data-ent]").forEach(tr=>tr.onclick=()=>verEntrevista(+tr.dataset.ent));
+  on("#r_xlsx","click",()=>exportarXlsx(lista));
+}
+
+async function verEntrevista(id){
+  const e=ENTS.find(x=>x.id===id);if(!e)return;
+  const {data:rs}=await sb.from("av_respostas").select("*").eq("entrevista_id",id).order("id");
+  const blocos={};
+  (rs||[]).forEach(r=>{(blocos[r.bloco_titulo||'Sem bloco']=blocos[r.bloco_titulo||'Sem bloco']||[]).push(r);});
+  const f=FORMS.find(x=>x.id===e.formulario_id)||{};
+  modal(`Entrevista ${esc(e.codigo)}`,`
+    ${e.alerta?`<div class="aviso r"><b>Protocolo de Alerta acionado.</b>
+      ${esc(e.alerta_desc||'Sem descrição registrada.')}</div>`:''}
+    <fieldset><legend>Identificação</legend>
+      <div class="frow four">
+        <div><label class="f">Formulário</label><div>${esc(f.nome||'—')}</div></div>
+        <div><label class="f">Unidade</label><div>${esc(e.unidade_nome||e.unidade_codigo||'—')}</div></div>
+        <div><label class="f">Perfil</label><div>${esc(e.faixa_nome||'—')}</div></div>
+        <div><label class="f">Data</label><div>${dbr(e.data_entrevista)}
+          ${e.hora_inicio?` · ${e.hora_inicio.slice(0,5)}–${(e.hora_fim||'').slice(0,5)}`:''}</div></div>
+      </div>
+      <div class="frow"><div><label class="f">Entrevistador(a)</label><div>${esc(e.entrevistador||'—')}</div></div>
+        <div><label class="f">Compreensão das perguntas</label><div>${esc(e.compreensao||'—')}</div></div></div>
+    </fieldset>
+    ${Object.entries(blocos).map(([t,qs])=>`
+      <div class="det-bloco">
+        <h4>${qs[0].eixo_codigo?`<span class="eixo-tag">${esc(qs[0].eixo_codigo)}</span>`:''}${esc(t)}</h4>
+        ${qs.map(r=>{
+          const cls=r.codigo===3||r.codigo===4||r.codigo===5?'pos':r.codigo===2?'med':r.codigo===1?'neg':'esp';
+          const rot=r.texto?null:(r.codigo===0?'Não quis responder (0)':r.codigo===9?'Não compreendeu (9)':
+            r.codigo===99?'Situação de alerta (99)':r.rotulo?`${r.rotulo} (${r.codigo})`:'Sem resposta');
+          return `<div class="det-q"><div class="e"><b>${esc(r.pergunta_cod)}</b> ${esc(r.enunciado)}</div>
+            ${r.texto?`<blockquote>${esc(r.texto)}</blockquote>`:`<div class="r ${cls}">${esc(rot)}</div>`}
+            ${r.alerta?`<div class="r neg">⚠ alerta nesta pergunta</div>`:''}</div>`;
+        }).join("")}
+      </div>`).join("")}
+    <fieldset><legend>Observações do(a) entrevistador(a)</legend>
+      <div class="frow">
+        <div><label class="f">Interrupções</label><div>${e.interrupcoes?'Sim':'Não'}</div></div>
+        <div><label class="f">Terceiros no ambiente</label><div>${e.terceiros?'Sim':'Não'}</div></div>
+      </div>
+      ${e.interrupcoes_desc?`<div class="frow one"><div><label class="f">Descrição</label>
+        <div>${esc(e.interrupcoes_desc)}</div></div></div>`:''}
+      ${(e.sinais_nao_verbais||[]).length?`<div class="frow one"><div><label class="f">Sinais não verbais</label>
+        <div>${(e.sinais_nao_verbais||[]).map(s=>`<span class="chip amber">${esc(s)}</span>`).join(" ")}</div></div></div>`:''}
+      ${e.adaptacao_linguagem?`<div class="frow one"><div><label class="f">Adaptações de linguagem</label>
+        <div>${esc(e.adaptacao_linguagem)}</div></div></div>`:''}
+      ${e.observacoes?`<div class="frow one"><div><label class="f">Observações gerais</label>
+        <div style="white-space:pre-wrap">${esc(e.observacoes)}</div></div></div>`:''}
+    </fieldset>`,
+    [{rot:"Fechar",cls:"ghost",fn:fecharModal}]);
+}
+
+/* ================================================================
+   ENCAMINHAMENTOS AO OGM
+================================================================ */
+async function renderEncaminhamentos(){
+  app.innerHTML=`<div class="card pad"><p class="lead">Carregando…</p></div>`;
+  await Promise.all([carregarEntrevistas(),carregarEncaminhamentos()]);
+  popularListasFiltro();
+  pintarEncaminhamentos();
+}
+function pintarEncaminhamentos(){
+  const pend=ENCS.filter(e=>e.status==="pendente"||e.status==="aprovado");
+  const feitos=ENCS.filter(e=>e.status==="enviado");
+  const rej=ENCS.filter(e=>e.status==="rejeitado");
+  app.innerHTML=`
+  ${barraFiltros(`<button class="btn primary" id="e_novo">Gerar encaminhamento</button>`)}
+  <div class="card pad">
+    <h2 class="sec">Encaminhamentos ao Controle de Processos</h2>
+    <p class="lead">Cada encaminhamento aprovado abre um processo no OGM com o tipo de demanda
+      <b>Avaliação de Serviço Público</b>, consolidando as entrevistas de uma unidade num período.
+      Nada é enviado sem a sua revisão.</p>
+    ${pend.length?`<h3 style="font-size:13.5px;margin:18px 0 10px">Aguardando revisão</h3>
+      ${pend.map(itemEnc).join("")}`:''}
+    ${feitos.length?`<h3 style="font-size:13.5px;margin:22px 0 10px">Enviados ao OGM</h3>
+      ${feitos.map(itemEnc).join("")}`:''}
+    ${rej.length?`<h3 style="font-size:13.5px;margin:22px 0 10px">Arquivados sem encaminhamento</h3>
+      ${rej.map(itemEnc).join("")}`:''}
+    ${!ENCS.length?`<div class="empty"><svg width="56" height="56"><use href="#ico-vazio"></use></svg>
+      <div>Nenhum encaminhamento gerado.</div>
+      <div style="margin-top:6px;font-size:12.5px">Filtre o formulário, a unidade e o período e use
+        <b>Gerar encaminhamento</b> para consolidar as entrevistas.</div></div>`:''}
+  </div>`;
+  ligarFiltros(pintarEncaminhamentos);
+  on("#e_novo","click",gerarEncaminhamento);
+  $$("[data-enc]").forEach(b=>b.onclick=()=>revisarEncaminhamento(+b.dataset.enc));
+}
+function itemEnc(e){
+  const st={pendente:['amber','Aguardando revisão'],aprovado:['blue','Revisado'],
+            enviado:['green','Processo criado'],rejeitado:['gray','Arquivado']}[e.status]||['gray',e.status];
+  return `<div class="lista-item">
+    <div class="mt"><b>${esc(e.codigo)} · ${esc(e.formulario_nome||'')}</b>
+      <div class="m2">${esc(e.unidade_codigo||'todas as unidades')} ·
+        ${e.periodo_ini?`${dbr(e.periodo_ini)} a ${dbr(e.periodo_fim)}`:'período completo'} ·
+        ${e.qtd_entrevistas} entrevista(s)${e.qtd_alertas?` · <b style="color:var(--vermelho)">${e.qtd_alertas} alerta(s)</b>`:''}</div>
+      ${e.numero_sei?`<div class="m2">SEI ${esc(e.numero_sei)}</div>`:''}</div>
+    <span class="chip ${st[0]}">${st[1]}</span>
+    ${e.indice_geral!=null?`<span class="chip blue">índice ${num(e.indice_geral)}</span>`:''}
+    <button class="btn ${e.status==='enviado'?'ghost':'primary'} sm" data-enc="${e.id}">
+      ${e.status==='enviado'?'Ver':'Revisar'}</button>
+  </div>`;
+}
+
+async function gerarEncaminhamento(){
+  const lista=aplicaFiltro(ENTS).filter(e=>!e.encaminhamento_id);
+  if(!lista.length){toast("Nenhuma entrevista sem encaminhamento no recorte atual.");return;}
+  const f=FORMS.find(x=>x.id===lista[0].formulario_id)||{};
+  if(new Set(lista.map(e=>e.formulario_id)).size>1){
+    toast("Selecione um único formulário no filtro antes de gerar.");return;}
+  const ids=lista.map(e=>e.id);
+  const {data:rs}=await sb.from("av_respostas").select("entrevista_id,codigo").in("entrevista_id",ids);
+  const val=(rs||[]).filter(r=>r.codigo>=1&&r.codigo<=5);
+  const idx=val.length?+(val.reduce((s,r)=>s+r.codigo,0)/val.length).toFixed(2):null;
+  const alertas=lista.filter(e=>e.alerta).length;
+  const unid=[...new Set(lista.map(e=>e.unidade_codigo).filter(Boolean))];
+  const codigo=await proximoCodigo('ENC');
+
+  const rec={
+    codigo, formulario_id:f.id, formulario_nome:f.nome,
+    unidade_codigo:unid.length===1?unid[0]:null,
+    periodo_ini:lista.map(e=>e.data_entrevista).sort()[0],
+    periodo_fim:lista.map(e=>e.data_entrevista).sort().slice(-1)[0],
+    entrevistas_ids:ids, qtd_entrevistas:ids.length, qtd_alertas:alertas,
+    indice_geral:idx,
+    resumo:montarResumo(f,lista,idx,alertas,unid),
+    tipo_demanda:'Avaliação de Serviço Público',
+    area:f.ogm_area, subarea:f.ogm_subarea, ods:f.ogm_ods||[],
+    ods_metas:f.ogm_ods_metas||[], orgao:f.ogm_orgao, eixo:f.ogm_eixo,
+    status:'pendente'
+  };
+  const {data,error}=await sb.from("av_encaminhamentos").insert(rec).select("id").single();
+  if(error){toast("Erro ao gerar: "+error.message);return;}
+  await sb.from("av_entrevistas").update({encaminhamento_id:data.id}).in("id",ids);
+  toast("Encaminhamento gerado. Revise antes de enviar ao OGM.");
+  await renderEncaminhamentos();
+  revisarEncaminhamento(data.id);
+}
+function montarResumo(f,lista,idx,alertas,unid){
+  const porFaixa={};lista.forEach(e=>{porFaixa[e.faixa_nome||e.faixa_codigo]=(porFaixa[e.faixa_nome||e.faixa_codigo]||0)+1;});
+  return `AVALIAÇÃO DE SERVIÇO PÚBLICO — ${f.nome}
+Serviço avaliado: ${f.servico||'—'}
+Período de coleta: ${dbr(lista.map(e=>e.data_entrevista).sort()[0])} a ${dbr(lista.map(e=>e.data_entrevista).sort().slice(-1)[0])}
+Unidade(s): ${unid.join(', ')||'—'}
+Entrevistas realizadas: ${lista.length}
+${Object.entries(porFaixa).map(([k,v])=>`  · ${k}: ${v}`).join("\n")}
+Índice geral de satisfação: ${idx==null?'—':num(idx)} (escala 1 a 3)
+Entrevistas com Protocolo de Alerta acionado: ${alertas}
+
+Fundamento: Lei nº 13.460/2017, art. 7º; Guia de Avaliação de Serviços Públicos (CGU).
+Códigos das entrevistas: ${lista.map(e=>e.codigo).join(', ')}
+Os dados detalhados, anonimizados, constam do Sistema de Avaliação de Serviços Públicos da Ouvidoria-Geral.`;
+}
+
+function revisarEncaminhamento(id){
+  const e=ENCS.find(x=>x.id===id);if(!e)return;
+  const tax=AUX.taxonomia||[];
+  const areas=[...new Set(tax.map(t=>t.area))].sort(byPt());
+  const orgaos=(AUX.orgaos||[]).slice().sort(byPt('nome'));
+  const serv=(AUX.servidores||[]).map(s=>s.nome).sort(byPt());
+  const unids=(AUX.unidades||[]).slice().sort(byPt('sigla'));
+  const enviado=e.status==="enviado";
+  modal(`Encaminhamento ${esc(e.codigo)}`,`
+    ${enviado?`<div class="aviso b">Processo já criado no OGM${e.numero_sei?` sob o SEI ${esc(e.numero_sei)}`:''}.
+      Este registro é somente leitura.</div>`:''}
+    ${e.qtd_alertas?`<div class="aviso r"><b>${e.qtd_alertas} entrevista(s) com Protocolo de Alerta.</b>
+      Verifique se os encaminhamentos externos — Conselho Tutelar, Ministério Público, Vara da
+      Infância e Juventude — já foram providenciados antes de abrir o processo.</div>`:''}
+    <fieldset><legend>Consolidação</legend>
+      <div class="frow four">
+        <div><label class="f">Entrevistas</label><div><b>${e.qtd_entrevistas}</b></div></div>
+        <div><label class="f">Alertas</label><div><b style="color:var(--vermelho)">${e.qtd_alertas}</b></div></div>
+        <div><label class="f">Índice geral</label><div><b>${num(e.indice_geral)}</b></div></div>
+        <div><label class="f">Período</label><div>${dbr(e.periodo_ini)} a ${dbr(e.periodo_fim)}</div></div>
+      </div>
+    </fieldset>
+    <fieldset><legend>Dados do processo no OGM</legend>
+      <div class="frow">
+        <div><label class="f">Número SEI <span class="hint">Abra o processo no SEI e informe o número aqui.</span></label>
+          <input id="v_sei" value="${esc(e.numero_sei||'')}" placeholder="00000.000000/2026-00" ${enviado?'disabled':''}></div>
+        <div><label class="f">Tipo de demanda</label>
+          <input value="Avaliação de Serviço Público" disabled></div>
+      </div>
+      <div class="frow">
+        <div><label class="f">Área temática</label>
+          <select id="v_area" ${enviado?'disabled':''}><option value="">Selecione</option>
+          ${areas.map(a=>`<option ${a===e.area?'selected':''}>${esc(a)}</option>`).join("")}</select></div>
+        <div><label class="f">Subárea</label>
+          <select id="v_sub" ${enviado?'disabled':''}></select></div>
+      </div>
+      <div class="frow">
+        <div><label class="f">Órgão demandado</label>
+          <select id="v_org" ${enviado?'disabled':''}><option value="">Selecione</option>
+          ${orgaos.map(o=>`<option value="${esc(o.sigla)}" ${o.sigla===e.orgao?'selected':''}>${esc(o.sigla)} — ${esc(o.nome)}</option>`).join("")}</select></div>
+        <div><label class="f">ODS relacionados</label>
+          <div id="v_ods" style="display:flex;flex-wrap:wrap;gap:5px;border:1px solid var(--linha);border-radius:8px;padding:8px;max-height:110px;overflow:auto"></div></div>
+      </div>
+      <div class="frow">
+        <div><label class="f">Servidor(a) responsável na Ouvidoria</label>
+          <select id="v_serv" ${enviado?'disabled':''}><option value="">Selecione</option>
+          ${serv.map(s=>`<option ${s===e.servidor?'selected':''}>${esc(s)}</option>`).join("")}</select></div>
+        <div><label class="f">Unidade responsável</label>
+          <select id="v_unid" ${enviado?'disabled':''}><option value="">Selecione</option>
+          ${unids.map(u=>`<option value="${esc(u.sigla)}" ${u.sigla===e.unidade_resp?'selected':''}>${esc(u.sigla)} — ${esc(u.nome)}</option>`).join("")}</select></div>
+      </div>
+    </fieldset>
+    <fieldset><legend>Resumo que irá para o processo</legend>
+      <textarea id="v_res" style="min-height:230px;font-family:ui-monospace,Consolas,monospace;font-size:12.5px" ${enviado?'disabled':''}>${esc(e.resumo||'')}</textarea>
+    </fieldset>`,
+    enviado?[{rot:"Fechar",cls:"ghost",fn:fecharModal}]
+    :[{rot:"Fechar",cls:"ghost",fn:fecharModal},
+      {rot:"Arquivar sem encaminhar",cls:"danger",fn:()=>arquivarEnc(e.id)},
+      {rot:"Salvar revisão",cls:"ghost",fn:()=>salvarRevisao(e.id,false)},
+      {rot:"Criar processo no OGM",cls:"ok",fn:()=>salvarRevisao(e.id,true)}],
+    "wide");
+
+  // subárea dependente
+  const pintaSub=()=>{
+    const a=$("#v_area").value;
+    const subs=tax.filter(t=>t.area===a).map(t=>t.subarea).sort(byPt());
+    $("#v_sub").innerHTML=`<option value="">Selecione</option>`+
+      subs.map(s=>`<option ${s===e.subarea?'selected':''}>${esc(s)}</option>`).join("");
+  };
+  on("#v_area","change",pintaSub);pintaSub();
+  // ODS
+  const odsSel=new Set((e.ods||[]).map(Number));
+  $("#v_ods").innerHTML=(AUX.ods||[]).map(o=>
+    `<label class="chip ${odsSel.has(o.numero)?'blue':'gray'}" style="cursor:pointer">
+      <input type="checkbox" class="v_o" value="${o.numero}" ${odsSel.has(o.numero)?'checked':''}
+        style="width:auto;margin-right:4px" ${enviado?'disabled':''}>${o.numero}</label>`).join("");
+}
+function coletaRevisao(){
+  return {
+    numero_sei:$("#v_sei").value.trim()||null,
+    area:$("#v_area").value||null, subarea:$("#v_sub").value||null,
+    orgao:$("#v_org").value||null, servidor:$("#v_serv").value||null,
+    unidade_resp:$("#v_unid").value||null,
+    ods:$$(".v_o").filter(c=>c.checked).map(c=>+c.value),
+    resumo:$("#v_res").value
+  };
+}
+async function salvarRevisao(id,enviar){
+  const d=coletaRevisao();
+  if(enviar){
+    if(!d.numero_sei){toast("Informe o número SEI do processo antes de criar.");return;}
+    if(!d.area||!d.subarea){toast("Classifique área e subárea antes de criar o processo.");return;}
+  }
+  const upd={...d,status:enviar?'aprovado':'pendente',
+    revisado_por:d.servidor,revisado_em:new Date().toISOString()};
+  const {error}=await sb.from("av_encaminhamentos").update(upd).eq("id",id);
+  if(error){toast("Erro ao salvar: "+error.message);return;}
+  if(!enviar){toast("Revisão salva.");fecharModal();return renderEncaminhamentos();}
+  await criarProcessoOGM(id,d);
+}
+async function criarProcessoOGM(id,d){
+  const e=ENCS.find(x=>x.id===id)||{};
+  const rec={
+    numero_sei:d.numero_sei, data_entrada:hoje(),
+    tipo_demanda:'Avaliação de Serviço Público',
+    orgao_demandado:d.orgao||null, orgaos:d.orgao?[d.orgao]:[],
+    n_manifestacoes:1,
+    area:d.area, subarea:d.subarea, ods:(d.ods||[]).map(Number),
+    servidor:d.servidor||null, unidade_resp:d.unidade_resp||'CG-OGM',
+    status:'Em análise',
+    observacoes:d.resumo
+  };
+  const {data,error}=await sbo.from("processos").insert(rec).select("id").single();
+  if(error){
+    // tenta sem os campos que podem não existir na tabela
+    const min={numero_sei:rec.numero_sei,data_entrada:rec.data_entrada,tipo_demanda:rec.tipo_demanda,
+      orgao_demandado:rec.orgao_demandado,orgaos:rec.orgaos,n_manifestacoes:1,
+      area:rec.area,subarea:rec.subarea,ods:rec.ods,servidor:rec.servidor,
+      unidade_resp:rec.unidade_resp,status:rec.status};
+    const r2=await sbo.from("processos").insert(min).select("id").single();
+    if(r2.error){toast("Não foi possível criar o processo: "+r2.error.message);return;}
+    await sb.from("av_encaminhamentos").update({status:'enviado',ogm_processo_id:r2.data.id}).eq("id",id);
+  }else{
+    await sb.from("av_encaminhamentos").update({status:'enviado',ogm_processo_id:data.id}).eq("id",id);
+  }
+  toast(`Processo ${d.numero_sei} criado no OGM.`);
+  fecharModal();renderEncaminhamentos();
+}
+async function arquivarEnc(id){
+  const m=prompt("Motivo para arquivar sem encaminhar ao OGM:");
+  if(m===null)return;
+  const {error}=await sb.from("av_encaminhamentos")
+    .update({status:'rejeitado',motivo_rejeicao:m,revisado_em:new Date().toISOString()}).eq("id",id);
+  if(error){toast("Erro: "+error.message);return;}
+  toast("Encaminhamento arquivado.");fecharModal();renderEncaminhamentos();
+}
+
+/* ================================================================
+   GESTÃO DO SISTEMA
+================================================================ */
+function renderGestao(){
+  if(GESTAO.form)return renderEditor();
+  const por={};
+  FORMS.forEach(f=>{(por[f.status]=por[f.status]||[]).push(f);});
+  const ordem=['ativo','publicado','rascunho','encerrado','descartado'];
+  app.innerHTML=`<div class="card pad">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div><h2 class="sec">Formulários de avaliação</h2>
+        <p class="lead">Cada formulário é uma edição de uma avaliação: um serviço, um período,
+          uma versão. Reutilizar significa clonar e revisar os quesitos — as respostas antigas
+          permanecem presas à versão em que foram coletadas.</p></div>
+      <button class="btn primary" id="g_novo">Novo formulário</button>
+    </div>
+    ${ordem.filter(s=>por[s]&&por[s].length).map(s=>`
+      <h3 style="font-size:13px;margin:20px 0 10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)">
+        ${STATUS_FORM[s].rot}</h3>
+      ${por[s].map(f=>linhaGestao(f)).join("")}`).join("")}
+    ${!FORMS.length?`<div class="empty"><svg width="56" height="56"><use href="#ico-vazio"></use></svg>
+      <div>Nenhum formulário cadastrado.</div></div>`:''}
+  </div>`;
+  on("#g_novo","click",novoFormulario);
+  $$("[data-ed]").forEach(b=>b.onclick=()=>abrirEditor(+b.dataset.ed));
+  $$("[data-clone]").forEach(b=>b.onclick=()=>clonar(+b.dataset.clone));
+  $$("[data-st]").forEach(b=>b.onclick=()=>mudarStatus(+b.dataset.st,b.dataset.para));
+}
+function linhaGestao(f){
+  const st=STATUS_FORM[f.status];
+  const acts=[];
+  if(f.status==='rascunho'){
+    acts.push(`<button class="btn ghost sm" data-ed="${f.id}">Editar</button>`);
+    acts.push(`<button class="btn primary sm" data-st="${f.id}" data-para="publicado">Publicar</button>`);
+    acts.push(`<button class="btn danger sm" data-st="${f.id}" data-para="descartado">Descartar</button>`);
+  }else if(f.status==='publicado'){
+    acts.push(`<button class="btn ghost sm" data-ed="${f.id}">Ver / editar</button>`);
+    acts.push(`<button class="btn ok sm" data-st="${f.id}" data-para="ativo">Ativar coleta</button>`);
+    acts.push(`<button class="btn ghost sm" data-st="${f.id}" data-para="rascunho">Voltar a rascunho</button>`);
+  }else if(f.status==='ativo'){
+    acts.push(`<button class="btn ghost sm" data-ed="${f.id}">Ver</button>`);
+    acts.push(`<button class="btn primary sm" data-st="${f.id}" data-para="encerrado">Encerrar período</button>`);
+  }else if(f.status==='encerrado'){
+    acts.push(`<button class="btn ghost sm" data-ed="${f.id}">Ver</button>`);
+  }
+  if(f.status!=='descartado')
+    acts.push(`<button class="btn ghost sm" data-clone="${f.id}">Clonar nova versão</button>`);
+  return `<div class="lista-item">
+    <div class="mt"><b>${esc(f.nome)}</b>
+      <div class="m2">${esc(f.servico||'—')}</div>
+      <div class="m2">${esc(f.codigo)} · versão ${f.versao}
+        ${f.origem_id?' · derivado de versão anterior':''}
+        ${f.data_inicio?` · ${dbr(f.data_inicio)} a ${dbr(f.data_fim)}`:''}</div></div>
+    <span class="chip ${st.chip}">${st.rot}</span>
+    <div class="acts">${acts.join("")}</div></div>`;
+}
+async function mudarStatus(id,para){
+  const f=FORMS.find(x=>x.id===id);
+  if(para==='ativo'&&(!f.data_inicio||!f.data_fim)){
+    toast("Defina o período de coleta antes de ativar.");return abrirEditor(id);}
+  if(para==='descartado'&&!confirm("Descartar este formulário? Ele deixa de aparecer nas listas, mas fica no histórico."))return;
+  if(para==='encerrado'&&!confirm("Encerrar o período de coleta?\n\nAs entrevistas registradas ficam congeladas e continuam visíveis no painel."))return;
+  const {error}=await sb.from("av_formularios").update({status:para}).eq("id",id);
+  if(error){toast(error.message);return;}
+  await carregarFormularios();renderGestao();
+  toast(`Formulário ${STATUS_FORM[para].rot.toLowerCase()}.`);
+}
+async function clonar(id){
+  const f=FORMS.find(x=>x.id===id);
+  const nome=prompt("Nome da nova versão:",f.nome.replace(/ \(v\d+\)$/,'')+" — nova edição");
+  if(nome===null)return;
+  const {data,error}=await sb.rpc('av_clonar_formulario',{p_id:id,p_nome:nome});
+  if(error){toast("Erro ao clonar: "+error.message);return;}
+  await carregarFormularios();
+  toast("Nova versão criada em rascunho. Revise os quesitos antes de publicar.");
+  abrirEditor(data);
+}
+async function novoFormulario(){
+  const nome=prompt("Nome do formulário:\n\nEx.: Atendimento nas UBS — 2º semestre de 2026");
+  if(!nome)return;
+  const codigo=await proximoCodigo('FORM');
+  const {data,error}=await sb.from("av_formularios")
+    .insert({codigo,nome,status:'rascunho',criado_por:'Ouvidoria-Geral'}).select("id").single();
+  if(error){toast(error.message);return;}
+  await carregarFormularios();abrirEditor(data.id);
+}
+
+/* ---------------- editor ---------------- */
+async function abrirEditor(id){
+  const D=await carregarFormCompleto(id);if(!D)return;
+  GESTAO.form=D;GESTAO.aba="dados";renderEditor();
+}
+function renderEditor(){
+  const D=GESTAO.form, f=D.formulario;
+  const so_leitura=(f.status==='ativo'||f.status==='encerrado');
+  const abas=[['dados','Dados gerais'],['eixos','Eixos'],['faixas','Faixas e perfis'],
+              ['unidades','Unidades'],['perguntas','Blocos e perguntas']];
+  app.innerHTML=`<div class="card pad">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+      <div><h2 class="sec">${esc(f.nome)}</h2>
+        <p class="lead">${esc(f.codigo)} · versão ${f.versao} ·
+          <span class="chip ${STATUS_FORM[f.status].chip}">${STATUS_FORM[f.status].rot}</span></p></div>
+      <button class="btn ghost" id="ed_voltar">← Todos os formulários</button>
+    </div>
+    ${so_leitura?`<div class="aviso y">Formulário ${STATUS_FORM[f.status].rot.toLowerCase()}:
+      a estrutura está congelada para preservar a integridade das respostas já coletadas.
+      Para alterar os quesitos, clone uma nova versão.</div>`:''}
+    <div class="sub-tabs">${abas.map(([k,r])=>
+      `<button data-aba="${k}" class="${GESTAO.aba===k?'on':''}">${r}</button>`).join("")}</div>
+    <div id="ed_corpo"></div>
+  </div>`;
+  on("#ed_voltar","click",()=>{GESTAO.form=null;renderGestao();});
+  $$("[data-aba]").forEach(b=>b.onclick=()=>{GESTAO.aba=b.dataset.aba;renderEditor();});
+  ({dados:edDados,eixos:edEixos,faixas:edFaixas,unidades:edUnidades,perguntas:edPerguntas}[GESTAO.aba])(so_leitura);
+}
+const dis=ro=>ro?'disabled':'';
+
+function edDados(ro){
+  const f=GESTAO.form.formulario;
+  const tax=AUX.taxonomia||[];
+  const areas=[...new Set(tax.map(t=>t.area))].sort(byPt());
+  const orgaos=(AUX.orgaos||[]).slice().sort(byPt('sigla'));
+  $("#ed_corpo").innerHTML=`
+    <fieldset><legend>Identificação</legend>
+      <div class="frow one"><div><label class="f">Nome do formulário</label>
+        <input id="d_nome" value="${esc(f.nome)}" ${dis(ro)}></div></div>
+      <div class="frow one"><div><label class="f">Serviço público avaliado</label>
+        <input id="d_serv" value="${esc(f.servico||'')}" ${dis(ro)}
+          placeholder="Ex.: Serviço de Acolhimento Institucional na modalidade Casa Lar"></div></div>
+      <div class="frow one"><div><label class="f">Descrição e motivação</label>
+        <textarea id="d_desc" ${dis(ro)}>${esc(f.descricao||'')}</textarea></div></div>
+      <div class="frow one"><div><label class="f">Público-alvo</label>
+        <input id="d_pub" value="${esc(f.publico_alvo||'')}" ${dis(ro)}></div></div>
+    </fieldset>
+    <fieldset><legend>Período de coleta</legend>
+      <div class="frow three">
+        <div><label class="f">Início</label><input type="date" id="d_ini" value="${f.data_inicio||''}" ${dis(ro)}></div>
+        <div><label class="f">Fim</label><input type="date" id="d_fim" value="${f.data_fim||''}" ${dis(ro)}></div>
+        <div><label class="f">Usa faixas etárias?</label>
+          <select id="d_faixas" ${dis(ro)}>
+            <option value="1" ${f.usa_faixas?'selected':''}>Sim — perfis diferentes por idade</option>
+            <option value="0" ${!f.usa_faixas?'selected':''}>Não — público único</option></select></div>
+      </div>
+    </fieldset>
+    <fieldset><legend>Classificação no Controle de Processos</legend>
+      <p class="lead">Preenche automaticamente o processo aberto no OGM quando um encaminhamento é aprovado.</p>
+      <div class="frow">
+        <div><label class="f">Área temática</label>
+          <select id="d_area" ${dis(ro)}><option value="">Selecione</option>
+          ${areas.map(a=>`<option ${a===f.ogm_area?'selected':''}>${esc(a)}</option>`).join("")}</select></div>
+        <div><label class="f">Subárea</label><select id="d_sub" ${dis(ro)}></select></div>
+      </div>
+      <div class="frow">
+        <div><label class="f">Órgão demandado</label>
+          <select id="d_org" ${dis(ro)}><option value="">Selecione</option>
+          ${orgaos.map(o=>`<option value="${esc(o.sigla)}" ${o.sigla===f.ogm_orgao?'selected':''}>${esc(o.sigla)} — ${esc(o.nome)}</option>`).join("")}</select></div>
+        <div><label class="f">ODS relacionados</label>
+          <div id="d_ods" style="display:flex;flex-wrap:wrap;gap:5px;border:1px solid var(--linha);border-radius:8px;padding:8px;max-height:110px;overflow:auto"></div></div>
+      </div>
+      <div class="frow one"><div><label class="f">Metas dos ODS
+        <span class="hint">Marque as metas da Agenda 2030 a que a avaliação se vincula.</span></label>
+        <div id="d_metas" style="border:1px solid var(--linha);border-radius:8px;padding:8px;max-height:210px;overflow:auto"></div></div></div>
+    </fieldset>
+    <fieldset><legend>Regra de encaminhamento</legend>
+      <div class="frow">
+        <div><label class="f">Quando gerar encaminhamento ao OGM</label>
+          <select id="d_regra" ${dis(ro)}>
+            <option value="alerta" ${f.regra_encaminhamento==='alerta'?'selected':''}>Quando houver alerta no período</option>
+            <option value="negativa" ${f.regra_encaminhamento==='negativa'?'selected':''}>Quando houver avaliação negativa</option>
+            <option value="todas" ${f.regra_encaminhamento==='todas'?'selected':''}>Sempre, ao encerrar o período</option>
+            <option value="manual" ${f.regra_encaminhamento==='manual'?'selected':''}>Somente quando eu decidir</option>
+          </select></div>
+        <div><label class="f">Gera encaminhamento?</label>
+          <select id="d_gera" ${dis(ro)}>
+            <option value="1" ${f.gera_encaminhamento?'selected':''}>Sim</option>
+            <option value="0" ${!f.gera_encaminhamento?'selected':''}>Não</option></select></div>
+      </div>
+      <div class="aviso b">O encaminhamento nunca é automático: a fila de revisão é sempre a sua,
+        e o processo só é aberto no OGM depois que você confirmar.</div>
+    </fieldset>
+    ${ro?'':`<button class="btn primary" id="d_salvar">Salvar dados gerais</button>`}`;
+
+  const pintaSub=()=>{
+    const a=$("#d_area").value;
+    const subs=tax.filter(t=>t.area===a).map(t=>t.subarea).sort(byPt());
+    $("#d_sub").innerHTML=`<option value="">Selecione</option>`+
+      subs.map(s=>`<option ${s===f.ogm_subarea?'selected':''}>${esc(s)}</option>`).join("");
+  };
+  on("#d_area","change",pintaSub);pintaSub();
+  const odsSel=new Set((f.ogm_ods||[]).map(Number));
+  $("#d_ods").innerHTML=(AUX.ods||[]).map(o=>
+    `<label class="chip ${odsSel.has(o.numero)?'blue':'gray'}" style="cursor:pointer" title="${esc(o.nome)}">
+      <input type="checkbox" class="d_o" value="${o.numero}" ${odsSel.has(o.numero)?'checked':''}
+      style="width:auto;margin-right:4px" ${dis(ro)}>${o.numero}</label>`).join("");
+  const mSel=new Set(f.ogm_ods_metas||[]);
+  const metas=(AUX.ods_metas||[]).filter(m=>!odsSel.size||odsSel.has(Number(m.ods_numero)));
+  $("#d_metas").innerHTML=metas.length?metas.map(m=>
+    `<label class="check" style="font-weight:500;font-size:12.5px">
+      <input type="checkbox" class="d_m" value="${esc(m.codigo)}" ${mSel.has(m.codigo)?'checked':''} ${dis(ro)}>
+      <span><b>${esc(m.codigo)}</b> ${esc(m.texto||'')}</span></label>`).join("")
+    :`<div style="color:var(--muted);font-size:12.5px">Selecione um ODS para listar as metas.</div>`;
+  $$(".d_o").forEach(c=>c.onchange=()=>{coletarDados(true);edDados(ro);});
+
+  on("#d_salvar","click",()=>coletarDados());
+  async function coletarDados(silencioso){
+    const rec={
+      nome:$("#d_nome").value.trim(), servico:$("#d_serv").value.trim()||null,
+      descricao:$("#d_desc").value.trim()||null, publico_alvo:$("#d_pub").value.trim()||null,
+      data_inicio:$("#d_ini").value||null, data_fim:$("#d_fim").value||null,
+      usa_faixas:$("#d_faixas").value==="1",
+      ogm_area:$("#d_area").value||null, ogm_subarea:$("#d_sub").value||null,
+      ogm_orgao:$("#d_org").value||null,
+      ogm_ods:$$(".d_o").filter(c=>c.checked).map(c=>+c.value),
+      ogm_ods_metas:$$(".d_m").filter(c=>c.checked).map(c=>c.value),
+      regra_encaminhamento:$("#d_regra").value,
+      gera_encaminhamento:$("#d_gera").value==="1"
+    };
+    Object.assign(GESTAO.form.formulario,rec);
+    if(silencioso)return;
+    const {error}=await sb.from("av_formularios").update(rec).eq("id",f.id);
+    if(error){toast(error.message);return;}
+    await carregarFormularios();toast("Dados gerais salvos.");renderEditor();
+  }
+}
+
+function edEixos(ro){
+  const D=GESTAO.form;
+  $("#ed_corpo").innerHTML=`
+    <p class="lead">As dimensões pelas quais o serviço é avaliado. Cada formulário tem as suas —
+      a Casa Lar usa CASA, CORAÇÃO, ESTRELA e ESCUDO; uma avaliação de saúde pode usar outras.</p>
+    <div id="lx"></div>
+    ${ro?'':`<button class="btn ghost sm" id="x_add">Adicionar eixo</button>
+      <button class="btn primary" id="x_salvar" style="margin-left:8px">Salvar eixos</button>`}`;
+  const pinta=()=>{
+    $("#lx").innerHTML=(D.eixos||[]).map((e,i)=>`
+      <div class="linha-edit" style="grid-template-columns:44px 130px 1fr 150px 90px 40px">
+        ${ico(e.icone,"eixo-ico",e.cor)}
+        <input value="${esc(e.codigo)}" data-x="codigo" data-i="${i}" placeholder="CASA" ${dis(ro)}>
+        <input value="${esc(e.nome)}" data-x="nome" data-i="${i}" placeholder="Estrutura e acolhida" ${dis(ro)}>
+        <select data-x="icone" data-i="${i}" ${dis(ro)}>${ICONES.map(ic=>
+          `<option value="${ic}" ${ic===e.icone?'selected':''}>${ic}</option>`).join("")}</select>
+        <input type="color" value="${e.cor||'#0056EF'}" data-x="cor" data-i="${i}" ${dis(ro)} style="padding:3px;height:36px">
+        ${ro?'':`<button class="rm" data-rmx="${i}">×</button>`}
+      </div>`).join("")||`<div class="empty" style="padding:24px">Nenhum eixo definido.</div>`;
+    $$("[data-x]").forEach(el=>el.onchange=()=>{D.eixos[+el.dataset.i][el.dataset.x]=el.value;pinta();});
+    $$("[data-rmx]").forEach(b=>b.onclick=()=>{D.eixos.splice(+b.dataset.rmx,1);pinta();});
+  };
+  pinta();
+  on("#x_add","click",()=>{D.eixos.push({codigo:"",nome:"",icone:"casa",cor:"#0056EF",ordem:D.eixos.length+1});pinta();});
+  on("#x_salvar","click",async()=>{
+    const val=D.eixos.filter(e=>(e.codigo||'').trim());
+    if(val.some(e=>!e.nome.trim())){toast("Todo eixo precisa de nome.");return;}
+    await sb.from("av_eixos").delete().eq("formulario_id",D.formulario.id);
+    if(val.length){
+      const {error}=await sb.from("av_eixos").insert(val.map((e,i)=>({
+        formulario_id:D.formulario.id,codigo:e.codigo.trim().toUpperCase(),nome:e.nome.trim(),
+        icone:e.icone,cor:e.cor,ordem:i+1})));
+      if(error){toast(error.message);return;}
+    }
+    toast("Eixos salvos.");abrirEditor(D.formulario.id);
+  });
+}
+
+function edFaixas(ro){
+  const D=GESTAO.form;
+  $("#ed_corpo").innerHTML=`
+    <p class="lead">Cada perfil recebe o mesmo conteúdo de perguntas com apoio visual e condução
+      próprios. Formulários sem segmentação usam um único perfil.</p>
+    <div id="lf"></div>
+    ${ro?'':`<button class="btn ghost sm" id="fx_add">Adicionar perfil</button>
+      <button class="btn primary" id="fx_salvar" style="margin-left:8px">Salvar perfis</button>`}`;
+  const pinta=()=>{
+    $("#lf").innerHTML=(D.faixas||[]).map((x,i)=>`
+      <div class="linha-edit">
+        <div class="frow four" style="margin:0">
+          <div><label class="f">Código</label><input value="${esc(x.codigo)}" data-y="codigo" data-i="${i}" placeholder="1-A" ${dis(ro)}></div>
+          <div><label class="f">Nome</label><input value="${esc(x.nome)}" data-y="nome" data-i="${i}" ${dis(ro)}></div>
+          <div><label class="f">Idade mínima</label><input type="number" value="${x.idade_min??''}" data-y="idade_min" data-i="${i}" ${dis(ro)}></div>
+          <div><label class="f">Idade máxima</label><input type="number" value="${x.idade_max??''}" data-y="idade_max" data-i="${i}" ${dis(ro)}></div>
+        </div>
+        <div class="frow" style="margin:0">
+          <div><label class="f">Apoio visual</label><select data-y="modo_visual" data-i="${i}" ${dis(ro)}>
+            ${MODOS.map(([k,r])=>`<option value="${k}" ${k===x.modo_visual?'selected':''}>${r}</option>`).join("")}</select></div>
+          <div><label class="f">Duração estimada (min)</label><input type="number" value="${x.duracao_min??''}" data-y="duracao_min" data-i="${i}" ${dis(ro)}></div>
+        </div>
+        <div><label class="f">Orientação ao entrevistador</label>
+          <textarea data-y="orientacao" data-i="${i}" ${dis(ro)}>${esc(x.orientacao||'')}</textarea></div>
+        ${ro?'':`<button class="rm" data-rmf="${i}" style="justify-self:end">×</button>`}
+      </div>`).join("")||`<div class="empty" style="padding:24px">Nenhum perfil definido.</div>`;
+    $$("[data-y]").forEach(el=>el.onchange=()=>{
+      const v=el.type==="number"?(el.value===""?null:+el.value):el.value;
+      D.faixas[+el.dataset.i][el.dataset.y]=v;});
+    $$("[data-rmf]").forEach(b=>b.onclick=()=>{D.faixas.splice(+b.dataset.rmf,1);pinta();});
+  };
+  pinta();
+  on("#fx_add","click",()=>{D.faixas.push({codigo:"",nome:"",modo_visual:"texto",ordem:D.faixas.length+1});pinta();});
+  on("#fx_salvar","click",async()=>{
+    const val=D.faixas.filter(x=>(x.codigo||'').trim()&&(x.nome||'').trim());
+    await sb.from("av_faixas").delete().eq("formulario_id",D.formulario.id);
+    if(val.length){
+      const {error}=await sb.from("av_faixas").insert(val.map((x,i)=>({
+        formulario_id:D.formulario.id,codigo:x.codigo.trim(),nome:x.nome.trim(),
+        idade_min:x.idade_min,idade_max:x.idade_max,modo_visual:x.modo_visual,
+        duracao_min:x.duracao_min,orientacao:x.orientacao||null,ordem:i+1})));
+      if(error){toast(error.message);return;}
+    }
+    toast("Perfis salvos.");abrirEditor(D.formulario.id);
+  });
+}
+
+function edUnidades(ro){
+  const D=GESTAO.form;
+  $("#ed_corpo").innerHTML=`
+    <p class="lead">Os locais onde a avaliação será aplicada. O ouvidor escolhe a unidade ao iniciar
+      cada entrevista, e o painel permite comparar o desempenho entre elas.</p>
+    <div id="lu"></div>
+    ${ro?'':`<button class="btn ghost sm" id="u_add">Adicionar unidade</button>
+      <button class="btn ghost sm" id="u_predios" style="margin-left:6px">Importar prédios do OGM</button>
+      <button class="btn primary" id="u_salvar" style="margin-left:8px">Salvar unidades</button>`}`;
+  const pinta=()=>{
+    $("#lu").innerHTML=(D.unidades||[]).map((u,i)=>`
+      <div class="linha-edit" style="grid-template-columns:140px 1fr 1fr 40px">
+        <input value="${esc(u.codigo)}" data-u="codigo" data-i="${i}" placeholder="CL-01" ${dis(ro)}>
+        <input value="${esc(u.nome)}" data-u="nome" data-i="${i}" placeholder="Casa Lar 01" ${dis(ro)}>
+        <input value="${esc(u.endereco||'')}" data-u="endereco" data-i="${i}" placeholder="Endereço (opcional)" ${dis(ro)}>
+        ${ro?'':`<button class="rm" data-rmu="${i}">×</button>`}
+      </div>`).join("")||`<div class="empty" style="padding:24px">Nenhuma unidade definida.</div>`;
+    $$("[data-u]").forEach(el=>el.onchange=()=>{D.unidades[+el.dataset.i][el.dataset.u]=el.value;});
+    $$("[data-rmu]").forEach(b=>b.onclick=()=>{D.unidades.splice(+b.dataset.rmu,1);pinta();});
+  };
+  pinta();
+  on("#u_add","click",()=>{D.unidades.push({codigo:"",nome:"",ordem:D.unidades.length+1});pinta();});
+  on("#u_predios","click",()=>{
+    const ps=(AUX.predios||[]).slice().sort(byPt('nome'));
+    if(!ps.length){toast("Nenhum prédio cadastrado no OGM.");return;}
+    modal("Importar prédios públicos",`
+      <p class="lead">Marque os prédios que serão avaliados neste formulário.</p>
+      <div style="max-height:400px;overflow:auto">${ps.map((p,i)=>
+        `<label class="check"><input type="checkbox" class="pp" value="${i}">
+          <span>${esc(p.nome)}<span class="hint">${esc(p.endereco||'')} ${esc(p.bairro||'')}</span></span></label>`).join("")}</div>`,
+      [{rot:"Cancelar",cls:"ghost",fn:fecharModal},
+       {rot:"Importar",cls:"primary",fn:()=>{
+          $$(".pp").filter(c=>c.checked).forEach(c=>{
+            const p=ps[+c.value];
+            D.unidades.push({codigo:`U-${String(D.unidades.length+1).padStart(2,'0')}`,
+              nome:p.nome,endereco:[p.endereco,p.bairro].filter(Boolean).join(' — '),
+              ordem:D.unidades.length+1});
+          });
+          fecharModal();pinta();
+       }}]);
+  });
+  on("#u_salvar","click",async()=>{
+    const val=D.unidades.filter(u=>(u.codigo||'').trim()&&(u.nome||'').trim());
+    await sb.from("av_unidades").delete().eq("formulario_id",D.formulario.id);
+    if(val.length){
+      const {error}=await sb.from("av_unidades").insert(val.map((u,i)=>({
+        formulario_id:D.formulario.id,codigo:u.codigo.trim(),nome:u.nome.trim(),
+        endereco:u.endereco||null,ordem:i+1})));
+      if(error){toast(error.message);return;}
+    }
+    toast("Unidades salvas.");abrirEditor(D.formulario.id);
+  });
+}
+
+function edPerguntas(ro){
+  const D=GESTAO.form;
+  const eixos=D.eixos||[], faixas=D.faixas||[];
+  $("#ed_corpo").innerHTML=`
+    <p class="lead">Organize as perguntas em blocos temáticos. Marque como <b>crítica</b> as
+      perguntas cuja resposta negativa deve acionar o Protocolo de Alerta automaticamente.</p>
+    ${!eixos.length?`<div class="aviso y">Defina os eixos antes de criar os blocos.</div>`:''}
+    <div id="lb"></div>
+    ${ro?'':`<button class="btn ghost sm" id="b_add">Adicionar bloco</button>
+      <button class="btn ghost sm" id="b_import" style="margin-left:6px">Importar de outro formulário</button>
+      <button class="btn primary" id="b_salvar" style="margin-left:8px">Salvar blocos e perguntas</button>`}`;
+  const pinta=()=>{
+    $("#lb").innerHTML=(D.blocos||[]).map((b,bi)=>{
+      const qs=(D.perguntas||[]).filter(q=>q.bloco_id===b.id||q.__bloco===bi);
+      const e=eixos.find(x=>x.id===b.eixo_id)||{};
+      return `<fieldset style="background:#fbfcff">
+        <legend>${ico(e.icone,"eixo-ico",e.cor)} Bloco ${bi+1}</legend>
+        <div class="frow" style="align-items:end">
+          <div><label class="f">Título do bloco</label>
+            <input value="${esc(b.titulo)}" data-b="titulo" data-i="${bi}" ${dis(ro)}></div>
+          <div style="display:flex;gap:8px;align-items:end">
+            <div style="flex:1"><label class="f">Eixo</label>
+              <select data-b="eixo_id" data-i="${bi}" ${dis(ro)}><option value="">—</option>
+              ${eixos.map(x=>`<option value="${x.id}" ${x.id===b.eixo_id?'selected':''}>${esc(x.codigo)} — ${esc(x.nome)}</option>`).join("")}</select></div>
+            ${ro?'':`<button class="rm" data-rmb="${bi}">×</button>`}
+          </div>
+        </div>
+        ${qs.map((q,qi)=>linhaPergunta(q,D.perguntas.indexOf(q),faixas,ro)).join("")}
+        ${ro?'':`<button class="btn ghost sm" data-qadd="${bi}" style="margin-bottom:14px">Adicionar pergunta neste bloco</button>`}
+      </fieldset>`;}).join("")||`<div class="empty" style="padding:24px">Nenhum bloco criado.</div>`;
+
+    $$("[data-b]").forEach(el=>el.onchange=()=>{
+      const v=el.dataset.b==="eixo_id"?(el.value?+el.value:null):el.value;
+      D.blocos[+el.dataset.i][el.dataset.b]=v;pinta();});
+    $$("[data-rmb]").forEach(b=>b.onclick=()=>{
+      const bi=+b.dataset.rmb, bloco=D.blocos[bi];
+      D.perguntas=D.perguntas.filter(q=>q.bloco_id!==bloco.id&&q.__bloco!==bi);
+      D.blocos.splice(bi,1);pinta();});
+    $$("[data-qadd]").forEach(b=>b.onclick=()=>{
+      const bi=+b.dataset.qadd, bloco=D.blocos[bi];
+      const n=D.perguntas.length+1;
+      D.perguntas.push({codigo:`p${String(n).padStart(2,'0')}`,enunciado:"",tipo:"escala3",
+        opcoes:[],obrigatoria:true,critica:false,faixas:faixas.map(f=>f.codigo),
+        bloco_id:bloco.id,__bloco:bi,ordem:n});
+      pinta();});
+    $$("[data-q]").forEach(el=>el.onchange=()=>{
+      const q=D.perguntas[+el.dataset.i], k=el.dataset.q;
+      if(k==="obrigatoria"||k==="critica")q[k]=el.checked;
+      else if(k==="faixas"){
+        const c=el.value;
+        q.faixas=q.faixas||[];
+        if(el.checked){if(!q.faixas.includes(c))q.faixas.push(c);}
+        else q.faixas=q.faixas.filter(x=>x!==c);
+      }else if(k==="eixo_id"){q.eixo_id=el.value?+el.value:null;}
+      else{q[k]=el.value;if(k==="tipo")q.opcoes=[];}
+      pinta();});
+    $$("[data-rmq]").forEach(b=>b.onclick=()=>{D.perguntas.splice(+b.dataset.rmq,1);pinta();});
+    $$("[data-opcs]").forEach(b=>b.onclick=()=>editarOpcoes(+b.dataset.opcs,pinta));
+  };
+  pinta();
+  on("#b_add","click",()=>{
+    D.blocos.push({id:-(Date.now()),titulo:"",eixo_id:(eixos[0]||{}).id||null,ordem:D.blocos.length+1});
+    pinta();});
+  on("#b_import","click",()=>importarPerguntas(pinta));
+  on("#b_salvar","click",salvarEstrutura);
+
+  async function salvarEstrutura(){
+    const fid=D.formulario.id;
+    await sb.from("av_perguntas").delete().eq("formulario_id",fid);
+    await sb.from("av_blocos").delete().eq("formulario_id",fid);
+    const blocosVal=D.blocos.filter(b=>(b.titulo||'').trim());
+    const mapa={};
+    for(let i=0;i<blocosVal.length;i++){
+      const b=blocosVal[i];
+      const eixo=(eixos.find(x=>x.id===b.eixo_id)||{});
+      const {data,error}=await sb.from("av_blocos").insert({
+        formulario_id:fid,eixo_id:(eixo.id&&eixo.id>0)?eixo.id:null,
+        titulo:b.titulo.trim(),ordem:i+1}).select("id").single();
+      if(error){toast("Erro no bloco: "+error.message);return;}
+      mapa[b.id]=data.id;
+    }
+    const qs=D.perguntas.filter(q=>(q.enunciado||'').trim()&&(q.codigo||'').trim());
+    if(qs.length){
+      const {error}=await sb.from("av_perguntas").insert(qs.map((q,i)=>({
+        formulario_id:fid,bloco_id:mapa[q.bloco_id]??null,
+        eixo_id:(q.eixo_id&&q.eixo_id>0)?q.eixo_id:null,codigo:q.codigo.trim(),
+        enunciado:q.enunciado.trim(),tipo:q.tipo,opcoes:opcoesDe(q),
+        obrigatoria:!!q.obrigatoria,critica:!!q.critica,
+        faixas:q.faixas||[],orientacao:q.orientacao||null,ordem:i+1})));
+      if(error){toast("Erro nas perguntas: "+error.message);return;}
+    }
+    toast("Estrutura salva.");abrirEditor(fid);
+  }
+  // as perguntas antigas são apagadas em cascata junto com os blocos
+}
+function opcoesDe(q){
+  if(q.opcoes&&q.opcoes.length)return q.opcoes;
+  if(q.tipo==="escala3")return [{rotulo:"Sim",codigo:3},{rotulo:"Mais ou menos",codigo:2},{rotulo:"Não",codigo:1}];
+  if(q.tipo==="binaria")return [{rotulo:"Sim",codigo:3},{rotulo:"Não",codigo:1}];
+  if(q.tipo==="escala5")return [5,4,3,2,1].map(n=>({rotulo:String(n),codigo:n}));
+  return [];
+}
+function linhaPergunta(q,i,faixas,ro){
+  const ops=opcoesDe(q);
+  const aberta=(q.tipo==="texto_longo"||q.tipo==="texto_curto");
+  return `<div class="linha-edit">
+    <div class="frow" style="margin:0;grid-template-columns:110px 1fr">
+      <div><label class="f">Código</label><input value="${esc(q.codigo)}" data-q="codigo" data-i="${i}" ${dis(ro)}></div>
+      <div><label class="f">Enunciado</label><input value="${esc(q.enunciado)}" data-q="enunciado" data-i="${i}" ${dis(ro)}></div>
+    </div>
+    <div class="frow" style="margin:0;grid-template-columns:1fr auto auto">
+      <div><label class="f">Tipo de resposta</label>
+        <select data-q="tipo" data-i="${i}" ${dis(ro)}>${TIPOS_PERG.map(([k,r])=>
+          `<option value="${k}" ${k===q.tipo?'selected':''}>${r}</option>`).join("")}</select></div>
+      <div style="align-self:end;padding-bottom:9px">
+        <label class="check" style="margin:0"><input type="checkbox" data-q="obrigatoria" data-i="${i}" ${q.obrigatoria?'checked':''} ${dis(ro)}> Obrigatória</label></div>
+      <div style="align-self:end;padding-bottom:9px">
+        <label class="check" style="margin:0"><input type="checkbox" data-q="critica" data-i="${i}" ${q.critica?'checked':''} ${dis(ro)}>
+          <span style="color:${q.critica?'var(--vermelho)':'inherit'}">Crítica</span></label></div>
+    </div>
+    <div><label class="f">Eixo desta pergunta
+      <span class="hint">Deixe em branco para herdar o eixo do bloco. Use quando a pergunta
+      pertencer a outra dimensão — por exemplo, uma pergunta de segurança dentro de um bloco de relações.</span></label>
+      <select data-q="eixo_id" data-i="${i}" ${dis(ro)}>
+        <option value="">Herdar do bloco</option>
+        ${(GESTAO.form.eixos||[]).map(x=>`<option value="${x.id}" ${x.id===q.eixo_id?'selected':''}>${esc(x.codigo)} — ${esc(x.nome)}</option>`).join("")}
+      </select></div>
+    ${aberta?'':`<div class="opcoes-box">
+      <span style="font-size:11.5px;font-weight:700;color:var(--muted)">Opções:</span>
+      ${ops.map(o=>`<span class="oc">${esc(o.rotulo)} <b>(${o.codigo})</b></span>`).join("")||'<span class="oc">—</span>'}
+      ${ro?'':`<button class="btn ghost sm" data-opcs="${i}">Editar opções</button>`}</div>`}
+    ${faixas.length>1?`<div style="display:flex;gap:10px;flex-wrap:wrap">
+      <span style="font-size:11.5px;font-weight:700;color:var(--muted);padding-top:3px">Aplicar em:</span>
+      ${faixas.map(f=>`<label class="check" style="margin:0;font-size:12px">
+        <input type="checkbox" data-q="faixas" data-i="${i}" value="${esc(f.codigo)}"
+          ${(!q.faixas||!q.faixas.length||q.faixas.includes(f.codigo))?'checked':''} ${dis(ro)}>
+        ${esc(f.codigo)}</label>`).join("")}</div>`:''}
+    <div><label class="f">Orientação ao entrevistador</label>
+      <input value="${esc(q.orientacao||'')}" data-q="orientacao" data-i="${i}" ${dis(ro)}
+        placeholder="Instrução que aparece abaixo da pergunta durante a entrevista"></div>
+    ${ro?'':`<button class="rm" data-rmq="${i}" style="justify-self:end">×</button>`}
+  </div>`;
+}
+function editarOpcoes(i,cb){
+  const q=GESTAO.form.perguntas[i];
+  const ops=opcoesDe(q).slice();
+  modal("Opções de resposta",`
+    <p class="lead">Códigos mais altos representam percepção mais positiva. Isso permite comparar
+      médias entre perguntas com escalas diferentes. Em perguntas invertidas — "você sente
+      sobrecarga?" — atribua 3 à resposta mais favorável ao serviço.</p>
+    <div id="lo"></div>
+    <button class="btn ghost sm" id="o_add">Adicionar opção</button>`,
+    [{rot:"Cancelar",cls:"ghost",fn:fecharModal},
+     {rot:"Aplicar",cls:"primary",fn:()=>{
+        q.opcoes=ops.filter(o=>(o.rotulo||'').trim()&&o.codigo!=null)
+          .map(o=>({rotulo:o.rotulo.trim(),codigo:+o.codigo}));
+        fecharModal();cb();}}]);
+  const pinta=()=>{
+    $("#lo").innerHTML=ops.map((o,j)=>`
+      <div class="linha-edit" style="grid-template-columns:1fr 110px 40px">
+        <input value="${esc(o.rotulo)}" data-o="rotulo" data-j="${j}" placeholder="Sempre">
+        <input type="number" value="${o.codigo}" data-o="codigo" data-j="${j}" min="1" max="5">
+        <button class="rm" data-rmo="${j}">×</button></div>`).join("");
+    $$("[data-o]").forEach(el=>el.onchange=()=>{
+      ops[+el.dataset.j][el.dataset.o]=el.dataset.o==="codigo"?+el.value:el.value;});
+    $$("[data-rmo]").forEach(b=>b.onclick=()=>{ops.splice(+b.dataset.rmo,1);pinta();});
+  };
+  pinta();
+  on("#o_add","click",()=>{ops.push({rotulo:"",codigo:ops.length?Math.min(5,ops.length+1):1});pinta();});
+}
+async function importarPerguntas(cb){
+  const outros=FORMS.filter(f=>f.id!==GESTAO.form.formulario.id);
+  if(!outros.length){toast("Não há outro formulário para copiar.");return;}
+  modal("Importar perguntas","<div><label class='f'>Formulário de origem</label>"+
+    `<select id="imp_f">${outros.map(f=>`<option value="${f.id}">${esc(f.nome)} · v${f.versao}</option>`).join("")}</select>`+
+    `<p class="lead" style="margin-top:12px">Os blocos e perguntas do formulário escolhido serão
+      acrescentados ao final deste. Os eixos são associados pelo código, quando existirem aqui.</p></div>`,
+    [{rot:"Cancelar",cls:"ghost",fn:fecharModal},
+     {rot:"Importar",cls:"primary",fn:async()=>{
+        const O=await carregarFormCompleto(+$("#imp_f").value);if(!O)return;
+        const D=GESTAO.form;
+        const mapa={};
+        (O.blocos||[]).forEach(b=>{
+          const eixoO=(O.eixos||[]).find(x=>x.id===b.eixo_id)||{};
+          const eixoD=(D.eixos||[]).find(x=>x.codigo===eixoO.codigo);
+          const novo={id:-(Date.now()+Math.random()*1000|0),titulo:b.titulo,
+            eixo_id:eixoD?eixoD.id:null,ordem:D.blocos.length+1};
+          D.blocos.push(novo);mapa[b.id]=novo.id;
+        });
+        (O.perguntas||[]).forEach(q=>{
+          const exO=(O.eixos||[]).find(x=>x.id===q.eixo_id);
+          const exD=exO?(D.eixos||[]).find(x=>x.codigo===exO.codigo):null;
+          D.perguntas.push({...q,id:undefined,bloco_id:mapa[q.bloco_id]??null,
+            eixo_id:exD?exD.id:null,
+            codigo:(D.perguntas.some(x=>x.codigo===q.codigo)?q.codigo+"_i":q.codigo),
+            ordem:D.perguntas.length+1});
+        });
+        fecharModal();cb();toast("Perguntas importadas. Revise antes de salvar.");
+     }}]);
+}
+
+/* ================================================================
+   RELATÓRIOS
+================================================================ */
+async function renderRelatorios(){
+  app.innerHTML=`<div class="card pad"><p class="lead">Carregando…</p></div>`;
+  await carregarEntrevistas();
+  popularListasFiltro();
+  pintarRelatorios();
+}
+function pintarRelatorios(){
+  const lista=aplicaFiltro(ENTS);
+  app.innerHTML=`
+  ${barraFiltros()}
+  <div class="card pad">
+    <h2 class="sec">Relatórios</h2>
+    <p class="lead">O recorte definido acima vale para os dois formatos. O relatório em PDF traz
+      capa com os filtros aplicados, os indicadores consolidados, as respostas fechadas e as
+      respostas abertas compiladas por tema. A planilha traz uma linha por entrevista.</p>
+    <div class="kpis">
+      <div class="card kpi"><div class="n">${lista.length}</div><div class="l">Entrevistas no recorte</div></div>
+      <div class="card kpi r"><div class="n">${lista.filter(e=>e.alerta).length}</div><div class="l">Com alerta</div></div>
+      <div class="card kpi b"><div class="n">${[...new Set(lista.map(e=>e.unidade_codigo).filter(Boolean))].length}</div>
+        <div class="l">Unidades</div></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn primary" id="rel_pdf" ${lista.length?'':'disabled'}>Gerar relatório em PDF</button>
+      <button class="btn ghost" id="rel_xlsx" ${lista.length?'':'disabled'}>Exportar planilha</button>
+    </div>
+    <div class="aviso b" style="margin-top:16px">O PDF é gerado pela caixa de impressão do
+      navegador: escolha <b>Salvar como PDF</b> no destino. Nenhum dado sai do seu aparelho
+      para gerar o arquivo.</div>
+  </div>`;
+  ligarFiltros(pintarRelatorios);
+  on("#rel_pdf","click",()=>gerarPDF(lista));
+  on("#rel_xlsx","click",()=>exportarXlsx(lista));
+}
+
+function descricaoFiltros(){
+  const p=[];
+  const f=FORMS.find(x=>String(x.id)===String(FILTRO.form));
+  p.push(["Formulário",f?`${f.nome} (versão ${f.versao})`:"Todos"]);
+  p.push(["Serviço avaliado",f?(f.servico||"—"):"—"]);
+  p.push(["Unidade",FILTRO.unidade||"Todas"]);
+  p.push(["Faixa ou perfil",FILTRO.faixa||"Todos"]);
+  p.push(["Período",(FILTRO.de||FILTRO.ate)?`${FILTRO.de?dbr(FILTRO.de):'início'} a ${FILTRO.ate?dbr(FILTRO.ate):'hoje'}`
+    :(f&&f.data_inicio?`${dbr(f.data_inicio)} a ${dbr(f.data_fim)}`:"Todo o histórico")]);
+  p.push(["Recorte de alerta",FILTRO.alerta==="1"?"Somente entrevistas com alerta":
+    FILTRO.alerta==="0"?"Somente entrevistas sem alerta":"Todas as entrevistas"]);
+  return p;
+}
+
+async function gerarPDF(lista){
+  const btn=$("#rel_pdf");btn.disabled=true;btn.textContent="Montando relatório…";
+  const ids=lista.map(e=>e.id);
+  const {data:rs}=await sb.from("av_respostas").select("*").in("entrevista_id",ids).limit(60000);
+  const R=rs||[];
+  const val=R.filter(r=>r.codigo>=1&&r.codigo<=5);
+  const idx=val.length?val.reduce((s,r)=>s+r.codigo,0)/val.length:null;
+  const nr=R.filter(r=>r.codigo===0||r.codigo===9);
+  const alertas=lista.filter(e=>e.alerta);
+
+  // por eixo
+  const pe={};val.filter(r=>r.eixo_codigo).forEach(r=>{(pe[r.eixo_codigo]=pe[r.eixo_codigo]||[]).push(r.codigo);});
+  // por unidade
+  const pu={};lista.forEach(e=>{pu[e.unidade_codigo||'—']=pu[e.unidade_codigo||'—']||{n:0,s:[],a:0};});
+  lista.forEach(e=>{const k=e.unidade_codigo||'—';pu[k].n++;if(e.alerta)pu[k].a++;});
+  val.forEach(r=>{const e=lista.find(x=>x.id===r.entrevista_id);if(e)pu[e.unidade_codigo||'—'].s.push(r.codigo);});
+  // por faixa
+  const pf={};lista.forEach(e=>{pf[e.faixa_nome||e.faixa_codigo||'—']=pf[e.faixa_nome||e.faixa_codigo||'—']||{n:0,s:[]};});
+  lista.forEach(e=>{pf[e.faixa_nome||e.faixa_codigo||'—'].n++;});
+  val.forEach(r=>{const e=lista.find(x=>x.id===r.entrevista_id);
+    if(e)pf[e.faixa_nome||e.faixa_codigo||'—'].s.push(r.codigo);});
+  // por pergunta
+  const pq={};val.forEach(r=>{const k=r.pergunta_cod;
+    pq[k]=pq[k]||{en:r.enunciado,eixo:r.eixo_codigo,v:[]};pq[k].v.push(r.codigo);});
+  // abertas por tema
+  const ab={};R.filter(r=>(r.texto||'').trim()).forEach(r=>{
+    const k=r.bloco_titulo||'Outras';(ab[k]=ab[k]||[]).push(r);});
+
+  const med=a=>a.length?(a.reduce((x,y)=>x+y,0)/a.length):null;
+  const cor=m=>m==null?'#6b7690':m>=2.5?'#1a8f33':m>=2?'#9a6a00':'#c02a1f';
+
+  const w=window.open("","_blank");
+  if(!w){toast("O navegador bloqueou a janela. Libere os pop-ups para gerar o PDF.");
+    btn.disabled=false;btn.textContent="Gerar relatório em PDF";return;}
+  w.document.write(`<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+  <title>Relatório de Avaliação de Serviços Públicos</title>
+  <style>
+   @page{size:A4;margin:16mm 14mm}
+   body{font-family:"Segoe UI",system-ui,Arial,sans-serif;font-size:11.5pt;color:#1b2334;line-height:1.5;margin:0}
+   h1{font-size:19pt;margin:12px 0 6px} h2{font-size:13.5pt;margin:26px 0 8px;color:#0a2350;
+     border-bottom:2px solid #0056EF;padding-bottom:5px} h3{font-size:12pt;margin:18px 0 6px}
+   table{width:100%;border-collapse:collapse;font-size:10pt;margin:10px 0}
+   th,td{border:1px solid #d9e0f0;padding:6px 8px;text-align:left;vertical-align:top}
+   th{background:#f2f6ff;font-size:9pt;text-transform:uppercase;letter-spacing:.4px;color:#374260}
+   .capa{text-align:center;padding:26mm 0 14mm;border-bottom:3px solid #0056EF}
+   .org{font-size:9pt;letter-spacing:2.4px;text-transform:uppercase;color:#6b7690;font-weight:700}
+   .capa .dl{margin-top:20px;font-size:10.5pt;text-align:left;display:inline-block}
+   .capa .dl div{margin:5px 0}
+   .capa .dl b{display:inline-block;min-width:150px;color:#0a3aa8}
+   .kpi-grid{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+   .kpi-b{flex:1;min-width:110px;border:1px solid #d9e0f0;border-radius:8px;padding:10px 12px}
+   .kpi-b .n{font-size:20pt;font-weight:800;line-height:1} .kpi-b .l{font-size:8.5pt;color:#6b7690;margin-top:4px}
+   .alerta{background:#fff1ef}
+   .al-box{border:1.5px solid #E23B2E;border-left-width:5px;border-radius:7px;padding:10px 13px;margin:10px 0;background:#fff7f6}
+   blockquote{margin:5px 0 12px;padding:8px 12px;border-left:3px solid #0056EF;background:#f7f9ff;
+     font-size:10pt;white-space:pre-wrap;border-radius:0 6px 6px 0}
+   .fonte{font-size:8.5pt;color:#6b7690;margin-top:3px}
+   .pagebreak{page-break-before:always}
+   .rod{margin-top:30px;border-top:1px solid #d9e0f0;padding-top:10px;font-size:8.5pt;color:#6b7690}
+   .bar{display:inline-block;height:9px;border-radius:5px;vertical-align:middle}
+  </style></head><body>
+
+  <div class="capa">
+    <div class="org">Prefeitura do Município de Londrina · Estado do Paraná</div>
+    <div class="org" style="margin-top:4px">Ouvidoria-Geral do Município</div>
+    <h1>Relatório de Avaliação de Serviços Públicos</h1>
+    <div style="font-size:10.5pt;color:#6b7690">Lei nº 13.460/2017, art. 7º · Guia de Avaliação de Serviços Públicos (CGU)</div>
+    <div class="dl">${descricaoFiltros().map(([k,v])=>`<div><b>${esc(k)}</b> ${esc(v)}</div>`).join("")}
+      <div><b>Entrevistas no recorte</b> ${lista.length}</div>
+      <div><b>Emitido em</b> ${new Date().toLocaleString('pt-BR')}</div>
+    </div>
+  </div>
+
+  <h2>1. Indicadores consolidados</h2>
+  <div class="kpi-grid">
+    <div class="kpi-b"><div class="n">${lista.length}</div><div class="l">Entrevistas</div></div>
+    <div class="kpi-b"><div class="n" style="color:${cor(idx)}">${idx==null?'—':num(idx)}</div>
+      <div class="l">Índice geral (1 a 3)</div></div>
+    <div class="kpi-b"><div class="n" style="color:#c02a1f">${alertas.length}</div><div class="l">Com alerta</div></div>
+    <div class="kpi-b"><div class="n">${num(lista.length?alertas.length/lista.length*100:0,1)}%</div><div class="l">Taxa de alerta</div></div>
+    <div class="kpi-b"><div class="n">${num(R.length?nr.length/R.length*100:0,1)}%</div><div class="l">Taxa de não-resposta</div></div>
+  </div>
+  <p class="fonte">O índice geral é a média aritmética dos códigos de todas as respostas fechadas,
+    em escala de 1 a 3, na qual valores mais altos indicam percepção mais positiva. A taxa de
+    não-resposta soma os códigos 0 (recusa ou não aplicável) e 9 (não compreendeu) e serve como
+    indicador da adequação do instrumento ao público entrevistado.</p>
+
+  <h3>1.1 Índice por dimensão</h3>
+  <table><thead><tr><th>Eixo</th><th>Respostas</th><th>Índice</th><th style="width:34%">Representação</th></tr></thead>
+  <tbody>${Object.entries(pe).map(([k,v])=>{const m=med(v);
+    return `<tr><td><b>${esc(k)}</b></td><td>${v.length}</td>
+      <td style="color:${cor(m)};font-weight:700">${num(m)}</td>
+      <td><span class="bar" style="width:${Math.max(4,((m-1)/2)*100).toFixed(0)}%;background:${cor(m)}"></span></td></tr>`;
+    }).join("")||`<tr><td colspan="4">Sem respostas classificadas por eixo.</td></tr>`}</tbody></table>
+
+  <h3>1.2 Índice por unidade</h3>
+  <table><thead><tr><th>Unidade</th><th>Entrevistas</th><th>Alertas</th><th>Índice</th></tr></thead>
+  <tbody>${Object.entries(pu).map(([k,v])=>{const m=med(v.s);
+    return `<tr class="${v.a?'alerta':''}"><td><b>${esc(k)}</b></td><td>${v.n}</td>
+      <td${v.a?' style="color:#c02a1f;font-weight:700"':''}>${v.a}</td>
+      <td style="color:${cor(m)};font-weight:700">${num(m)}</td></tr>`;}).join("")}</tbody></table>
+
+  <h3>1.3 Índice por faixa ou perfil</h3>
+  <table><thead><tr><th>Perfil</th><th>Entrevistas</th><th>Índice</th></tr></thead>
+  <tbody>${Object.entries(pf).map(([k,v])=>{const m=med(v.s);
+    return `<tr><td>${esc(k)}</td><td>${v.n}</td>
+      <td style="color:${cor(m)};font-weight:700">${num(m)}</td></tr>`;}).join("")}</tbody></table>
+
+  <div class="pagebreak"></div>
+  <h2>2. Respostas fechadas, pergunta a pergunta</h2>
+  <table><thead><tr><th style="width:52px">Código</th><th>Pergunta</th><th style="width:64px">Eixo</th>
+    <th style="width:50px">N</th><th style="width:60px">Média</th></tr></thead>
+  <tbody>${Object.entries(pq).sort((a,b)=>med(a[1].v)-med(b[1].v)).map(([k,v])=>{const m=med(v.v);
+    return `<tr><td><b>${esc(k)}</b></td><td>${esc(v.en)}</td><td>${esc(v.eixo||'—')}</td>
+      <td>${v.v.length}</td><td style="color:${cor(m)};font-weight:700">${num(m)}</td></tr>`;}).join("")
+    ||`<tr><td colspan="5">Sem respostas fechadas no recorte.</td></tr>`}</tbody></table>
+  <p class="fonte">Ordenado da menor para a maior média. As linhas do topo indicam os pontos que
+    mais demandam atenção da gestão.</p>
+
+  ${alertas.length?`<div class="pagebreak"></div>
+  <h2>3. Situações de alerta</h2>
+  <p>Foram acionados ${alertas.length} Protocolos de Alerta, correspondentes a
+    ${num(alertas.length/lista.length*100,1)}% das entrevistas do recorte. O conteúdo abaixo está
+    anonimizado: as entrevistas são identificadas apenas por código.</p>
+  ${alertas.map(e=>`<div class="al-box">
+    <b>${esc(e.codigo)}</b> · ${esc(e.unidade_codigo||'—')} · ${esc(e.faixa_nome||'—')} · ${dbr(e.data_entrevista)}
+    <div style="margin-top:6px;white-space:pre-wrap">${esc(e.alerta_desc||'Alerta registrado sem descrição textual.')}</div>
+  </div>`).join("")}
+  <p class="fonte">Nos termos do art. 13 do ECA e da Lei nº 13.431/2017, os alertas devem ser
+    comunicados ao Conselho Tutelar, ao Ministério Público, à Vara da Infância e Juventude e à
+    Secretaria Municipal de Assistência Social, conforme o caso.</p>`:''}
+
+  <div class="pagebreak"></div>
+  <h2>${alertas.length?'4':'3'}. Respostas abertas, compiladas por tema</h2>
+  ${Object.entries(ab).map(([tema,rs2])=>`
+    <h3>${esc(tema)}</h3>
+    ${[...new Set(rs2.map(r=>r.pergunta_cod))].map(cod=>{
+      const grupo=rs2.filter(r=>r.pergunta_cod===cod);
+      return `<div style="margin-bottom:14px"><b>${esc(cod)}</b> ${esc(grupo[0].enunciado)}
+        ${grupo.map(r=>{const e=lista.find(x=>x.id===r.entrevista_id)||{};
+          return `<blockquote>${esc(r.texto)}
+            <div class="fonte">${esc(e.codigo||'')} · ${esc(e.unidade_codigo||'')} · ${esc(e.faixa_codigo||'')}</div>
+          </blockquote>`;}).join("")}</div>`;}).join("")}
+  `).join("")||'<p>Nenhuma resposta aberta registrada no recorte.</p>'}
+
+  <div class="pagebreak"></div>
+  <h2>${alertas.length?'5':'4'}. Relação das entrevistas</h2>
+  <table><thead><tr><th>Código</th><th>Data</th><th>Unidade</th><th>Perfil</th>
+    <th>Entrevistador(a)</th><th>Alerta</th></tr></thead>
+  <tbody>${lista.map(e=>`<tr class="${e.alerta?'alerta':''}">
+    <td><b>${esc(e.codigo)}</b></td><td>${dbr(e.data_entrevista)}</td>
+    <td>${esc(e.unidade_codigo||'—')}</td><td>${esc(e.faixa_codigo||'—')}</td>
+    <td>${esc(e.entrevistador||'—')}</td>
+    <td${e.alerta?' style="color:#c02a1f;font-weight:700"':''}>${e.alerta?'Sim':'Não'}</td></tr>`).join("")}</tbody></table>
+
+  <div class="rod">
+    Ouvidoria-Geral do Município de Londrina · Avenida Duque de Caxias, 635 · Jardim Mazei II<br>
+    Relatório gerado pelo Sistema de Avaliação de Serviços Públicos em ${new Date().toLocaleString('pt-BR')}.
+    Dados anonimizados nos termos do art. 13 e do art. 14 da Lei nº 13.709/2018 (LGPD).
+  </div>
+  </body></html>`);
+  w.document.close();
+  setTimeout(()=>{w.focus();w.print();},600);
+  btn.disabled=false;btn.textContent="Gerar relatório em PDF";
+}
+
+async function exportarXlsx(lista){
+  if(!lista.length){toast("Nada a exportar no recorte.");return;}
+  toast("Montando a planilha…");
+  const ids=lista.map(e=>e.id);
+  const {data:rs}=await sb.from("av_respostas").select("*").in("entrevista_id",ids).limit(60000);
+  const R=rs||[];
+  const cods=[...new Set(R.map(r=>r.pergunta_cod))].sort();
+  const enun={};R.forEach(r=>{enun[r.pergunta_cod]=r.enunciado;});
+  const linhas=lista.map(e=>{
+    const meus=R.filter(r=>r.entrevista_id===e.id);
+    const val=meus.filter(r=>r.codigo>=1&&r.codigo<=5);
+    const l={
+      "Código da entrevista":e.codigo,
+      "Formulário":(FORMS.find(f=>f.id===e.formulario_id)||{}).nome||"",
+      "Versão":e.formulario_versao,
+      "Unidade":e.unidade_codigo||"", "Unidade (nome)":e.unidade_nome||"",
+      "Perfil":e.faixa_codigo||"", "Perfil (nome)":e.faixa_nome||"",
+      "Data":dbr(e.data_entrevista),
+      "Hora início":(e.hora_inicio||"").slice(0,5), "Hora fim":(e.hora_fim||"").slice(0,5),
+      "Entrevistador(a)":e.entrevistador||"",
+      "Índice da entrevista":val.length?+(val.reduce((s,r)=>s+r.codigo,0)/val.length).toFixed(2):"",
+      "Alerta":e.alerta?"SIM":"não", "Descrição do alerta":e.alerta_desc||"",
+      "Interrupções":e.interrupcoes?"sim":"não", "Terceiros presentes":e.terceiros?"sim":"não",
+      "Compreensão":e.compreensao||"",
+      "Sinais não verbais":(e.sinais_nao_verbais||[]).join("; "),
+      "Adaptação de linguagem":e.adaptacao_linguagem||"",
+      "Observações gerais":e.observacoes||""
+    };
+    cods.forEach(c=>{
+      const r=meus.find(x=>x.pergunta_cod===c);
+      l[c]=r?(r.texto?r.texto:(r.codigo??"")):"";
+    });
+    return l;
+  });
+  // linha 1: dicionário dos enunciados
+  const dic={"Código da entrevista":"— enunciado das perguntas —"};
+  cods.forEach(c=>{dic[c]=enun[c]||"";});
+  const ws=XLSX.utils.json_to_sheet([dic,...linhas]);
+  ws['!cols']=Object.keys(linhas[0]||dic).map(k=>({wch:Math.min(46,Math.max(12,k.length+4))}));
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"Avaliações");
+  const f=FORMS.find(x=>String(x.id)===String(FILTRO.form));
+  const nome=`avaliacao_${(f?f.nome:'geral').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-zA-Z0-9]+/g,'_').toLowerCase()}_${hoje()}.xlsx`;
+  XLSX.writeFile(wb,nome);
+  toast("Planilha baixada.");
+}
+
+/* ================================================================
+   MODAL
+================================================================ */
+function modal(titulo,corpo,botoes,classe){
+  modalRoot.innerHTML=`<div class="overlay"><div class="modal ${classe||''}">
+    <div class="modal-head"><h3>${titulo}</h3><button class="x" id="m_x">×</button></div>
+    <div class="modal-body">${corpo}</div>
+    <div class="modal-foot">${(botoes||[]).map((b,i)=>
+      `<button class="btn ${b.cls||'ghost'}" data-mb="${i}">${esc(b.rot)}</button>`).join("")}</div>
+  </div></div>`;
+  on("#m_x","click",fecharModal);
+  $$("[data-mb]").forEach(b=>b.onclick=()=>botoes[+b.dataset.mb].fn());
+  modalRoot.querySelector(".overlay").onclick=ev=>{if(ev.target.classList.contains("overlay"))fecharModal();};
+}
+function fecharModal(){modalRoot.innerHTML="";}
+document.addEventListener("keydown",ev=>{if(ev.key==="Escape"&&!ENT)fecharModal();});
+</script>
+</body>
+</html>
